@@ -1,8 +1,7 @@
 {
-  "client_id": "https://cimd.dev/oauth/client-metadata.json",
+  "client_id": "https://cimd.dev/oauth/metadata.json",
   "client_name": "CIMD.dev",
   "client_uri": "https://cimd.dev",
-  "logo_uri": "https://cimd.dev/logo.png",
   "redirect_uris": [
     "https://cimd.dev/oauth/callback"
   ],

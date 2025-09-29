@@ -124,7 +124,7 @@ export function BuiltByStytch() {
   const cooldownRef = useRef<NodeJS.Timeout | null>(null);
   const initialAnimationRef = useRef<NodeJS.Timeout | null>(null);
 
-  const text = "Built by Stytch";
+  const text = "Presented by Stytch";
 
   // Trigger initial animation on mount
   useEffect(() => {
@@ -180,7 +180,7 @@ export function BuiltByStytch() {
   return (
     <Link href="https://stytch.com?utm_source=cimd.dev" target="_blank" rel="noopener noreferrer">
       <div 
-        className="bg-[rgb(178,214,222)] w-[158px] cursor-pointer p-2 hover:bg-[rgb(158,194,202)] rounded-md"
+        className="bg-[rgb(178,214,222)] w-[188px] cursor-pointer p-2 hover:bg-[rgb(158,194,202)] rounded-md"
         onMouseEnter={handleMouseEnter}
       >
         <div className="flex items-center gap-2">

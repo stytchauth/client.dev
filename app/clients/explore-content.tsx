@@ -187,7 +187,7 @@ export function ExploreContent() {
                     type="url"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="https://cimd.dev/oauth/client-metadata.json"
+                    placeholder="https://cimd.dev/oauth/metadata.json"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -200,10 +200,9 @@ export function ExploreContent() {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder={JSON.stringify({
-                      "client_id": "https://cimd.dev/oauth/client-metadata.json",
+                      "client_id": "https://cimd.dev/oauth/metadata.json",
                       "client_name": "CIMD.dev",
                       "client_uri": "https://cimd.dev",
-                      "logo_uri": "https://cimd.dev/logo.png",
                       "redirect_uris": ["https://cimd.dev/oauth/callback"],
                       "grant_types": ["authorization_code"],
                       "response_types": ["code"],

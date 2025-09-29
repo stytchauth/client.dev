@@ -3,31 +3,23 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { ExternalLink, BookOpen, Users, Zap, Database, Shield, ArrowRight, CheckCircle } from "lucide-react"
+import { ExternalLink, Users, Zap, Database, Shield, CheckCircle } from "lucide-react"
 import { CodeBlock } from "@/lib/shiki"
 import { BuiltByStytch } from '@/components/ui/built-by-stytch';
 import { Header } from '@/components/ui/header';
 
-export default function Component() {
+export default function HomePage() {
   return (
     <div className="min-h-screen bg-white text-black overflow-x-hidden">
       <Header />
 
-      {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-16 overflow-x-hidden">
         <div className="space-y-16">
-        {/* <BuiltByStytch /> */}
-
-          {/* Hero Section */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <h1 className="text-5xl font-bold text-black leading-tight">
-                OAuth Client Registration, <br />
-                <span className="text-blue-600">Reimagined</span>
-              </h1>
               <p className="text-xl text-gray-600 max-w-3xl">
-                Client ID Metadata Documents (CIMD) let OAuth clients identify themselves using just a URL.
-                No preregistration. No database bloat. No operational headaches.
+                Client ID Metadata Documents (CIMD) let OAuth clients identify themselves using a URL.
+                No preregistration necessary.
               </p>
             </div>
 
@@ -58,93 +50,81 @@ export default function Component() {
           <div className="space-y-8">
             <h2 className="text-3xl font-bold">How CIMD Works</h2>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              <Card className="border border-gray-200">
-                <CardContent className="p-8">
-                  <div className="space-y-4">
-                    <div className="text-2xl font-bold text-red-600">Before: Traditional DCR</div>
-                    <div className="space-y-3 text-sm">
-                      <div className="flex items-start space-x-2">
-                        <span className="text-red-500">×</span>
-                        <span>Every client instance registers separately</span>
-                      </div>
-                      <div className="flex items-start space-x-2">
-                        <span className="text-red-500">×</span>
-                        <span>Unbounded database growth</span>
-                      </div>
-                      <div className="flex items-start space-x-2">
-                        <span className="text-red-500">×</span>
-                        <span>Complex client lifecycle management</span>
-                      </div>
-                      <div className="flex items-start space-x-2">
-                        <span className="text-red-500">×</span>
-                        <span>Vulnerable to client impersonation</span>
-                      </div>
-                    </div>
+            <div className="space-y-6">
+              {/* Flow Steps */}
+              <div className="space-y-4">
+                <div className="flex items-start space-x-4 p-6 bg-gray-50 rounded-lg">
+                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 font-semibold text-sm">1</span>
                   </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border border-green-200 bg-green-50">
-                <CardContent className="p-8">
-                  <div className="space-y-4">
-                    <div className="text-2xl font-bold text-green-600">After: CIMD</div>
-                    <div className="space-y-3 text-sm">
-                      <div className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
-                        <span>URL as client_id points to metadata JSON</span>
-                      </div>
-                      <div className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
-                        <span>Just-in-time metadata fetching</span>
-                      </div>
-                      <div className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
-                        <span>Single URL per application, scales infinitely</span>
-                      </div>
-                      <div className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
-                        <span>Cryptographic client verification</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* Simple Example */}
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold">It's Simple</h2>
-            <div className="space-y-4">
-              <Card className="bg-gray-50 border border-gray-200">
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    <div className="text-lg font-semibold">Instead of registering your client...</div>
-                    <CodeBlock language="javascript">{`// Traditional OAuth: Pre-register to get client_id
-const client_id = "abc123def456"; // From registration process`}</CodeBlock>
-
-                    <div className="text-lg font-semibold">Just use a URL that serves your metadata:</div>
-                    <CodeBlock language="javascript">{`// CIMD: Use your own URL as client_id
-const client_id = "https://myapp.com/oauth-metadata";
-
-// That URL returns:
-{
-  "client_id": "https://myapp.com/oauth-metadata",
-  "client_name": "My Awesome App",
-  "redirect_uris": ["https://myapp.com/callback"],
-  "token_endpoint_auth_method": "private_key_jwt",
-  "jwks_uri": "https://myapp.com/jwks"
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg mb-2">Client hosts metadata at URL</h3>
+                    <p className="text-gray-600 mb-3">The client creates a JSON document with their metadata and hosts it at an HTTPS URL.</p>
+                    <CodeBlock language="json">{`{
+  "client_id": "https://cimd.dev/oauth/metadata.json",
+  "client_name": "CIMD.dev",
+  "client_uri": "https://cimd.dev",
+  "redirect_uris": ["https://cimd.dev/oauth/callback"]
 }`}</CodeBlock>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+
+                <div className="flex items-start space-x-4 p-6 bg-gray-50 rounded-lg">
+                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 font-semibold text-sm">2</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg mb-2">Client uses URL as client_id</h3>
+                    <p className="text-gray-600 mb-3">Instead of a pre-registered client ID, the client passes the metadata URL directly.</p>
+                    <CodeBlock language="http">{`GET /authorize?client_id=https://cimd.dev/oauth/metadata.json&...`}</CodeBlock>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4 p-6 bg-gray-50 rounded-lg">
+                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 font-semibold text-sm">3</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg mb-2">Server fetches and validates metadata</h3>
+                    <p className="text-gray-600 mb-3">The authorization server fetches the JSON from the client_id URL and validates it.</p>
+                    <div className="text-sm text-gray-500">
+                      • Validates JSON structure and required fields<br/>
+                      • Ensures client_id matches the source URL<br/>
+                      • Checks redirect URIs and other parameters
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4 p-6 bg-gray-50 rounded-lg">
+                  <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg mb-2">Server shows client info in consent screen</h3>
+                    <p className="text-gray-600">The server displays the client_name and client_uri to help users make informed consent decisions.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Security Benefit */}
+              <div className="flex space-x-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex justify-center">
+                  <Shield className="w-6 h-6 text-blue-600 mt-1" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-blue-700 mb-3">
+                    CIMD provides <strong>built-in protection against client impersonation</strong> because the authorization server can verify that the client_uri has the same origin as the CIMD URL.
+                  </p>
+                  <div className="text-sm text-blue-700">
+                    <strong>Example:</strong> If the CIMD is hosted at <code className="bg-blue-100 px-1 rounded">https://dmic.dev/oauth/metadata.json</code> but claims <code className="bg-blue-100 px-1 rounded">client_uri: "https://cimd.dev"</code>, the server can detect this mismatch and show appropriate warnings.
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Use Cases */}
           <div className="space-y-8">
-            <h2 className="text-3xl font-bold">Perfect For</h2>
+            <h2 className="text-3xl font-bold">Use Cases</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card className="border border-gray-200 hover:shadow-md transition-shadow">
                 <CardContent className="p-6 space-y-3">
@@ -172,36 +152,6 @@ const client_id = "https://myapp.com/oauth-metadata";
                   <h3 className="font-bold text-lg">Enterprise Platforms</h3>
                   <p className="text-sm text-gray-600">
                     SaaS platforms with hundreds of integrations that don't want to manage thousands of client registrations.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border border-gray-200 hover:shadow-md transition-shadow">
-                <CardContent className="p-6 space-y-3">
-                  <Shield className="w-8 h-8 text-purple-600" />
-                  <h3 className="font-bold text-lg">Open Source Projects</h3>
-                  <p className="text-sm text-gray-600">
-                    Projects that need OAuth but want to avoid complex onboarding and registration processes.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border border-gray-200 hover:shadow-md transition-shadow">
-                <CardContent className="p-6 space-y-3">
-                  <ArrowRight className="w-8 h-8 text-orange-600" />
-                  <h3 className="font-bold text-lg">Dynamic Ecosystems</h3>
-                  <p className="text-sm text-gray-600">
-                    Any environment where clients need to connect to multiple servers without pre-coordination.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border border-gray-200 hover:shadow-md transition-shadow">
-                <CardContent className="p-6 space-y-3">
-                  <BookOpen className="w-8 h-8 text-indigo-600" />
-                  <h3 className="font-bold text-lg">Prototyping & Testing</h3>
-                  <p className="text-sm text-gray-600">
-                    Rapid development scenarios where traditional OAuth registration creates unnecessary friction.
                   </p>
                 </CardContent>
               </Card>

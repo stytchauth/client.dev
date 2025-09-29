@@ -7,16 +7,15 @@ export function LearnContent() {
   return (
     <div className="space-y-12">
       {/* Key Concept */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <div className="flex items-start space-x-3">
+      <div className="flex space-x-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex justify-center">
           <Globe className="w-6 h-6 text-blue-600 mt-1" />
-          <div>
-            <h3 className="font-semibold text-blue-900 mb-2">Key Concept</h3>
-            <p className="text-blue-800">
-              With CIMD, your <code className="bg-blue-100 px-1 rounded">client_id</code> is simply an HTTPS URL that serves your client metadata as JSON.
-              No preregistration required—just host your metadata and start using OAuth.
-            </p>
-          </div>
+        </div>
+        <div className="flex-1">
+          <p className="text-blue-700">
+            With CIMD, your <code className="bg-blue-100 px-1 rounded">client_id</code> is simply an HTTPS URL that serves your client metadata as JSON.
+            No preregistration necessary &mdash; just host your metadata and start using OAuth.
+          </p>
         </div>
       </div>
 
@@ -175,10 +174,10 @@ export function LearnContent() {
           </CardHeader>
           <CardContent>
             <CodeBlock language="json">{`{
-  "client_id": "https://example.com/oauth/client-metadata.json",
-  "client_name": "Example App",
-  "redirect_uris": ["https://example.com/callback"],
-  "logo_uri": "https://example.com/assets/logo.png"
+  "client_id": "https://cimd.dev/oauth/metadata.json",
+  "client_name": "CIMD.dev",
+  "client_uri": "https://cimd.dev",
+  "redirect_uris": ["https://cimd.dev/oauth/callback"]
 }`}</CodeBlock>
             <p className="text-sm text-gray-600 mt-4">
               This minimal document includes just the essential fields. Host this JSON at the URL specified in <code>client_id</code>.
