@@ -117,7 +117,7 @@ function FlipCharacter({
   );
 }
 
-export function BuiltByStytch() {
+export function PresentedByStytch() {
   const [animationTrigger, setAnimationTrigger] = useState(0);
   const [isInCooldown, setIsInCooldown] = useState(false);
   const [hasInitialAnimated, setHasInitialAnimated] = useState(false);

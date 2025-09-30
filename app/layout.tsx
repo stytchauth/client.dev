@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     default: 'CIMD - Client ID Metadata Documents',
     template: '%s | CIMD'
   },
-  description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Built by Stytch.',
+  description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Presented by Stytch.',
   keywords: ['OAuth', 'CIMD', 'Client ID Metadata Documents', 'OAuth client registration', 'MCP', 'Model Context Protocol', 'Stytch', 'authentication'],
   authors: [{ name: 'Stytch' }],
   creator: 'Stytch',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     url: 'https://cimd.dev',
     siteName: 'CIMD',
     title: 'CIMD - Client ID Metadata Documents',
-    description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Built by Stytch.',
+    description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Presented by Stytch.',
     images: [
       {
         url: '/opengraph-image.png',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'CIMD - Client ID Metadata Documents',
-    description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Built by Stytch.',
+    description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Presented by Stytch.',
     images: ['/opengraph-image.png'],
     creator: '@stytch',
   },

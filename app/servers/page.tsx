@@ -4,8 +4,9 @@ import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Server, Shield, AlertTriangle, Clock, CheckCircle, Code, Database, Zap, Monitor, Network, Lock } from "lucide-react"
 import { CodeBlock } from "@/lib/shiki"
-import { BuiltByStytch } from '@/components/ui/built-by-stytch';
+import { PresentedByStytch } from '@/components/ui/stytch';
 import { Header } from '@/components/ui/header';
+import { Main } from "@/components/ui/main";
 
 export default function ServersPage() {
   return (
@@ -13,7 +14,7 @@ export default function ServersPage() {
       <Header />
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-16 overflow-x-hidden">
+      <Main>
         <div className="space-y-12">
           {/* Header */}
           <div className="space-y-4">
@@ -478,10 +479,10 @@ def validate_cimd_schema(metadata: dict, expected_client_id: str):
           </div>
 
           <div className="mt-16">
-            <BuiltByStytch />
+            <PresentedByStytch />
           </div>
         </div>
-      </main>
+      </Main>
     </div>
   )
 }

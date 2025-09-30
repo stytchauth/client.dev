@@ -3,10 +3,11 @@
 import Link from "next/link"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft, FileText, Search } from "lucide-react"
-import { BuiltByStytch } from '@/components/ui/built-by-stytch';
+import { PresentedByStytch } from '@/components/ui/stytch';
 import { Header } from '@/components/ui/header';
-import { LearnContent } from './learn-content';
-import { ExploreContent } from './explore-content';
+import { LearnContent } from './tablearn';
+import { ExploreContent } from './tabexplore';
+import { Main } from "@/components/ui/main";
 
 export default function ClientsPage() {
   return (
@@ -14,7 +15,7 @@ export default function ClientsPage() {
       <Header />
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-16 overflow-x-hidden">
+      <Main>
         <div className="space-y-12">
           {/* Header */}
           <div className="space-y-4">
@@ -51,10 +52,10 @@ export default function ClientsPage() {
           </Tabs>
 
           <div className="mt-16">
-            <BuiltByStytch />
+            <PresentedByStytch />
           </div>
         </div>
-      </main>
+      </Main>
     </div>
   )
 }

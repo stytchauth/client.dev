@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Search, CheckCircle, Code, AlertCircle, Copy, Play, Shield } from "lucide-react"
 import { CodeBlock } from "@/lib/shiki"
-import { validateCIMDDocument, generateTextReport, ValidationResult } from './debugger-utils'
+import { validateCIMDDocument, generateTextReport, ValidationResult } from './utils'
 
 export function ExploreContent() {
   const [inputType, setInputType] = useState<'url' | 'json'>('url')
@@ -134,16 +134,16 @@ export function ExploreContent() {
     <div className="space-y-8">
       {/* CIMD Debugger */}
       <div className="space-y-6">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <div className="flex items-start space-x-3">
-            <Search className="w-6 h-6 text-blue-600 mt-1" />
-            <div>
-              <h3 className="font-semibold text-blue-900 mb-2">CIMD Validator</h3>
-              <p className="text-blue-800">
-                Validate that your Client ID Metadata Document is well-formed and production-ready.
-                Paste a client_id URL or raw JSON to get detailed validation feedback.
-              </p>
-            </div>
+        <div className="flex space-x-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex justify-center">
+          <Search className="w-6 h-6 text-blue-600 mt-1" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-blue-800 mb-2">CIMD Validator</h3>
+            <p className="text-blue-700">
+              Validate that your Client ID Metadata Document is well-formed and production-ready.
+              Paste a client_id URL or raw JSON to get detailed validation feedback.
+            </p>
           </div>
         </div>
 
@@ -222,9 +222,9 @@ export function ExploreContent() {
                   onCheckedChange={setEnableReachabilityCheck}
                 />
                 <label htmlFor="reachability" className="text-sm">
-                  <span className="font-medium">Enable reachability checks</span>
+                  <span className="font-medium">Check reachability</span>
                   <span className="block text-gray-600">
-                    Verify that URLs return HTTP 200 (adds network requests)
+                    Verify that URLs, including redirect URIs, return HTTP 200 (adds network requests)
                   </span>
                 </label>
               </div>

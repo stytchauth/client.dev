@@ -5,15 +5,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ExternalLink, Users, Zap, Database, Shield, CheckCircle } from "lucide-react"
 import { CodeBlock } from "@/lib/shiki"
-import { BuiltByStytch } from '@/components/ui/built-by-stytch';
+import { PresentedByStytch } from '@/components/ui/stytch';
 import { Header } from '@/components/ui/header';
+import { Main } from "@/components/ui/main"
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white text-black overflow-x-hidden">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-4 py-16 overflow-x-hidden">
+      <Main>
         <div className="space-y-16">
           <div className="space-y-6">
             <div className="space-y-4">
@@ -31,16 +32,16 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-start gap-4">
-              <Link href="/clients">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                  <Users className="w-4 h-4 mr-2" />
-                  Explore CIMD for Clients
-                </Button>
-              </Link>
               <Link href="/servers">
-                <Button size="lg" variant="outline">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
                   <Database className="w-4 h-4 mr-2" />
                   Explore CIMD for Servers
+                </Button>
+              </Link>
+              <Link href="/clients">
+                <Button size="lg" variant="outline">
+                  <Users className="w-4 h-4 mr-2" />
+                  Explore CIMD for Clients
                 </Button>
               </Link>
             </div>
@@ -161,25 +162,7 @@ export default function HomePage() {
           {/* Learn More */}
           <div className="space-y-6 bg-gray-50 rounded-lg p-8">
             <h2 className="text-2xl font-bold">Learn More</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <Link
-                href="https://blog.modelcontextprotocol.io/posts/client_registration/"
-                target="_blank"
-                className="block"
-              >
-                <Card className="border border-gray-200 hover:shadow-md transition-shadow h-full">
-                  <CardContent className="p-6 space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-semibold">MCP Blog: Evolving OAuth Client Registration</span>
-                      <ExternalLink className="w-4 h-4 text-gray-400" />
-                    </div>
-                    <p className="text-sm text-gray-600">
-                      Discover the motivation behind CIMD from the Model Context Protocol team's perspective.
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-
+            <div className="grid md:grid-cols-3 gap-6">
               <Link
                 href="https://datatracker.ietf.org/doc/draft-parecki-oauth-client-id-metadata-document/"
                 target="_blank"
@@ -189,10 +172,46 @@ export default function HomePage() {
                   <CardContent className="p-6 space-y-3">
                     <div className="flex items-center space-x-2">
                       <span className="font-semibold">IETF Draft: OAuth Client ID Metadata Document</span>
-                      <ExternalLink className="w-4 h-4 text-gray-400" />
+                      <ExternalLink className="w-8 h-8 text-gray-400" />
                     </div>
                     <p className="text-sm text-gray-600">
                       Read the full technical specification and implementation details.
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
+
+              <Link
+                href="https://stytch.com/blog/oauth-client-id-metadata-mcp/"
+                target="_blank"
+                className="block"
+              >
+                <Card className="border border-gray-200 hover:shadow-md transition-shadow h-full">
+                  <CardContent className="p-6 space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <span className="font-semibold">Stytch Blog: Building MCP with CIMD</span>
+                      <ExternalLink className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      Learn about how Stytch implements CIMD in its product suite.
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
+
+              <Link
+                href="https://blog.modelcontextprotocol.io/posts/client_registration/"
+                target="_blank"
+                className="block"
+              >
+                <Card className="border border-gray-200 hover:shadow-md transition-shadow h-full">
+                  <CardContent className="p-6 space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <span className="font-semibold">MCP Blog: Evolving OAuth Client Registration</span>
+                      <ExternalLink className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      Discover the motivation behind CIMD from the Model Context Protocol team's perspective.
                     </p>
                   </CardContent>
                 </Card>
@@ -204,26 +223,26 @@ export default function HomePage() {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Ready to Get Started?</h2>
             <div className="flex flex-col sm:flex-row items-start gap-4">
-              <Link href="/clients">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                  <Users className="w-4 h-4 mr-2" />
-                  Explore CIMD for Clients
-                </Button>
-              </Link>
               <Link href="/servers">
-                <Button size="lg" variant="outline">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
                   <Database className="w-4 h-4 mr-2" />
                   Explore CIMD for Servers
+                </Button>
+              </Link>
+              <Link href="/clients">
+                <Button size="lg" variant="outline">
+                  <Users className="w-4 h-4 mr-2" />
+                  Explore CIMD for Clients
                 </Button>
               </Link>
             </div>
           </div>
 
           <div className="mt-16">
-            <BuiltByStytch />
+            <PresentedByStytch />
           </div>
         </div>
-      </main>
+      </Main>
     </div>
   )
 }
