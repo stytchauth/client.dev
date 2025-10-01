@@ -237,10 +237,6 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-
-          <div className="mt-16">
-            <PresentedByStytch />
-          </div>
         </div>
       </Main>
     </div>

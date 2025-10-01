@@ -50,10 +50,6 @@ export default function ClientsPage() {
               <ExploreContent />
             </TabsContent>
           </Tabs>
-
-          <div className="mt-16">
-            <PresentedByStytch />
-          </div>
         </div>
       </Main>
     </div>

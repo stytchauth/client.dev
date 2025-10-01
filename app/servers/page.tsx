@@ -477,10 +477,6 @@ def validate_cimd_schema(metadata: dict, expected_client_id: str):
               </Link>
             </div>
           </div>
-
-          <div className="mt-16">
-            <PresentedByStytch />
-          </div>
         </div>
       </Main>
     </div>
