@@ -4,8 +4,9 @@ import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Server, Shield, AlertTriangle, Clock, CheckCircle, Code, Database, Zap, Monitor, Network, Lock } from "lucide-react"
 import { CodeBlock } from "@/lib/shiki"
-import { BuiltByStytch } from '@/components/ui/built-by-stytch';
+import { PresentedByStytch } from '@/components/ui/stytch';
 import { Header } from '@/components/ui/header';
+import { Main } from "@/components/ui/main";
 
 export default function ServersPage() {
   return (
@@ -13,7 +14,7 @@ export default function ServersPage() {
       <Header />
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-16 overflow-x-hidden">
+      <Main>
         <div className="space-y-12">
           {/* Header */}
           <div className="space-y-4">
@@ -28,16 +29,15 @@ export default function ServersPage() {
           </div>
 
           {/* Key Concept */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <div className="flex items-start space-x-3">
+          <div className="flex space-x-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex justify-center">
               <Server className="w-6 h-6 text-blue-600 mt-1" />
-              <div>
-                <h3 className="font-semibold text-blue-900 mb-2">Server Perspective</h3>
-                <p className="text-blue-800">
-                  Instead of maintaining a client registry, your authorization server fetches client metadata on-demand from the client_id URL.
-                  This eliminates database bloat while providing just-in-time client information.
-                </p>
-              </div>
+            </div>
+            <div className="flex-1">
+              <p className="text-blue-700">
+                With CIMD, your authorization server can fetch client metadata just-in-time from the client_id URL.
+                In most cases, you don't even need a client registry &mdash; just fetch the metadata in real time.
+              </p>
             </div>
           </div>
 
@@ -54,7 +54,7 @@ export default function ServersPage() {
                   <h3 className="font-semibold">Receive OAuth Request</h3>
                   <p className="text-sm text-gray-600">Client sends authorization request with client_id as HTTPS URL</p>
                   <div className="mt-2">
-                    <CodeBlock language="http">{`GET /authorize?client_id=https://example.com/oauth/metadata.json&...`}</CodeBlock>
+                    <CodeBlock language="http">{`GET /authorize?client_id=https://cimd.dev/oauth/metadata.json&...`}</CodeBlock>
                   </div>
                 </div>
               </div>
@@ -68,7 +68,7 @@ export default function ServersPage() {
                   <p className="text-sm text-gray-600">Make HTTPS GET request to client_id URL to retrieve metadata</p>
                   <div className="mt-2">
                     <CodeBlock language="http">{`GET /oauth/metadata.json HTTP/1.1
-Host: example.com
+Host: cimd.dev
 Accept: application/json`}</CodeBlock>
                   </div>
                 </div>
@@ -477,12 +477,8 @@ def validate_cimd_schema(metadata: dict, expected_client_id: str):
               </Link>
             </div>
           </div>
-
-          <div className="mt-16">
-            <BuiltByStytch />
-          </div>
         </div>
-      </main>
+      </Main>
     </div>
   )
 }
