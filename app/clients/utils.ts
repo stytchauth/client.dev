@@ -73,7 +73,7 @@ export const validateCIMDDocument = async (
         }
 
         // Check for localhost URIs in production context
-        if (uri.includes('localhost') || uri.includes('127.0.0.1')) {
+        if (uri.startsWith('localhost') || uri.startsWith('http://localhost') || uri.startsWith("https://localhost") || uri.includes('127.0.0.1')) {
           warnings.push({
             path: `redirect_uris[${index}]`,
             message: 'Localhost redirect URIs should not be used in production. Consider a separate CIMD for local development.',

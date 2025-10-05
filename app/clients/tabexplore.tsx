@@ -46,11 +46,9 @@ export function ExploreContent() {
 
         // Frontend-only fetch for security
         try {
-          const response = await fetch(sourceUrl, {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-            },
+          const response = await fetch('/cimd-proxy', {
+            method: 'POST',
+            body: JSON.stringify({ cimd: sourceUrl }),
           })
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}: Failed to fetch metadata`)
@@ -360,7 +358,7 @@ export function ExploreContent() {
               <Shield className="w-5 h-5 text-gray-500 mt-0.5" />
               <div className="text-sm text-gray-600">
                 <p className="font-medium">Privacy & Security</p>
-                <p>Your CIMD URLs and documents are validated in your browser. No content is sent to our servers.</p>
+                <p>We use a backend proxy to fetch your CIMD URLs. No content is stored or shared.</p>
               </div>
             </div>
           </CardContent>

@@ -35,13 +35,13 @@ export default function HomePage() {
               <Link href="/servers">
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
                   <Database className="w-4 h-4 mr-2" />
-                  Explore CIMD for Servers
+                  Explore CIMD for OAuth Servers
                 </Button>
               </Link>
               <Link href="/clients">
                 <Button size="lg" variant="outline">
                   <Users className="w-4 h-4 mr-2" />
-                  Explore CIMD for Clients
+                  Explore CIMD for OAuth Clients
                 </Button>
               </Link>
             </div>
@@ -226,13 +226,13 @@ export default function HomePage() {
               <Link href="/servers">
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
                   <Database className="w-4 h-4 mr-2" />
-                  Explore CIMD for Servers
+                  Explore CIMD for OAuth Servers
                 </Button>
               </Link>
               <Link href="/clients">
                 <Button size="lg" variant="outline">
                   <Users className="w-4 h-4 mr-2" />
-                  Explore CIMD for Clients
+                  Explore CIMD for OAuth Clients
                 </Button>
               </Link>
             </div>
