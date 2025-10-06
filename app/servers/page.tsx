@@ -54,7 +54,7 @@ export default function ServersPage() {
                   <h3 className="font-semibold">Receive OAuth Request</h3>
                   <p className="text-sm text-gray-600">Client sends authorization request with client_id as HTTPS URL</p>
                   <div className="mt-2">
-                    <CodeBlock language="http">{`GET /authorize?client_id=https://cimd.dev/oauth/metadata.json&...`}</CodeBlock>
+                    <CodeBlock language="http">{`GET /authorize?client_id=https://client.dev/oauth/metadata.json&...`}</CodeBlock>
                   </div>
                 </div>
               </div>
@@ -68,7 +68,7 @@ export default function ServersPage() {
                   <p className="text-sm text-gray-600">Make HTTPS GET request to client_id URL to retrieve metadata</p>
                   <div className="mt-2">
                     <CodeBlock language="http">{`GET /oauth/metadata.json HTTP/1.1
-Host: cimd.dev
+Host: client.dev
 Accept: application/json`}</CodeBlock>
                   </div>
                 </div>

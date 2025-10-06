@@ -46,11 +46,9 @@ export function ExploreContent() {
 
         // Frontend-only fetch for security
         try {
-          const response = await fetch(sourceUrl, {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-            },
+          const response = await fetch('/cimd-proxy', {
+            method: 'POST',
+            body: JSON.stringify({ cimd: sourceUrl }),
           })
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}: Failed to fetch metadata`)
@@ -187,7 +185,7 @@ export function ExploreContent() {
                     type="url"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="https://cimd.dev/oauth/metadata.json"
+                    placeholder="https://client.dev/oauth/metadata.json"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -200,14 +198,14 @@ export function ExploreContent() {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder={JSON.stringify({
-                      "client_id": "https://cimd.dev/oauth/metadata.json",
-                      "client_name": "CIMD.dev",
-                      "client_uri": "https://cimd.dev",
-                      "redirect_uris": ["https://cimd.dev/oauth/callback"],
+                      "client_id": "https://client.dev/oauth/metadata.json",
+                      "client_name": "client.dev",
+                      "client_uri": "https://client.dev",
+                      "redirect_uris": ["https://client.dev/oauth/callback"],
                       "grant_types": ["authorization_code"],
                       "response_types": ["code"],
                       "token_endpoint_auth_method": "private_key_jwt",
-                      "jwks_uri": "https://cimd.dev/.well-known/jwks.json"
+                      "jwks_uri": "https://client.dev/.well-known/jwks.json"
                     }, null, 2)}
                     className="w-full min-h-[200px] font-mono text-sm"
                   />
@@ -352,19 +350,6 @@ export function ExploreContent() {
             </CardContent>
           </Card>
         )}
-
-        {/* Security Notice */}
-        <Card className="border border-gray-200">
-          <CardContent className="p-4">
-            <div className="flex items-start space-x-3">
-              <Shield className="w-5 h-5 text-gray-500 mt-0.5" />
-              <div className="text-sm text-gray-600">
-                <p className="font-medium">Privacy & Security</p>
-                <p>Your CIMD URLs and documents are validated in your browser. No content is sent to our servers.</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   )

@@ -35,13 +35,13 @@ export default function HomePage() {
               <Link href="/servers">
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
                   <Database className="w-4 h-4 mr-2" />
-                  Explore CIMD for Servers
+                  Explore CIMD for OAuth Servers
                 </Button>
               </Link>
               <Link href="/clients">
                 <Button size="lg" variant="outline">
                   <Users className="w-4 h-4 mr-2" />
-                  Explore CIMD for Clients
+                  Explore CIMD for OAuth Clients
                 </Button>
               </Link>
             </div>
@@ -62,10 +62,10 @@ export default function HomePage() {
                     <h3 className="font-semibold text-lg mb-2">Client hosts metadata at URL</h3>
                     <p className="text-gray-600 mb-3">The client creates a JSON document with their metadata and hosts it at an HTTPS URL.</p>
                     <CodeBlock language="json">{`{
-  "client_id": "https://cimd.dev/oauth/metadata.json",
-  "client_name": "CIMD.dev",
-  "client_uri": "https://cimd.dev",
-  "redirect_uris": ["https://cimd.dev/oauth/callback"]
+  "client_id": "https://client.dev/oauth/metadata.json",
+  "client_name": "client.dev",
+  "client_uri": "https://client.dev",
+  "redirect_uris": ["https://client.dev/oauth/callback"]
 }`}</CodeBlock>
                   </div>
                 </div>
@@ -77,7 +77,7 @@ export default function HomePage() {
                   <div className="flex-1">
                     <h3 className="font-semibold text-lg mb-2">Client uses URL as client_id</h3>
                     <p className="text-gray-600 mb-3">Instead of a pre-registered client ID, the client passes the metadata URL directly.</p>
-                    <CodeBlock language="http">{`GET /authorize?client_id=https://cimd.dev/oauth/metadata.json&...`}</CodeBlock>
+                    <CodeBlock language="http">{`GET /authorize?client_id=https://client.dev/oauth/metadata.json&...`}</CodeBlock>
                   </div>
                 </div>
 
@@ -117,7 +117,7 @@ export default function HomePage() {
                     CIMD provides <strong>built-in protection against client impersonation</strong> because the authorization server can verify that the client_uri has the same origin as the CIMD URL.
                   </p>
                   <div className="text-sm text-blue-700">
-                    <strong>Example:</strong> If the CIMD is hosted at <code className="bg-blue-100 px-1 rounded">https://dmic.dev/oauth/metadata.json</code> but claims <code className="bg-blue-100 px-1 rounded">client_uri: "https://cimd.dev"</code>, the server can detect this mismatch and show appropriate warnings.
+                    <strong>Example:</strong> If the CIMD is hosted at <code className="bg-blue-100 px-1 rounded">https://dmic.dev/oauth/metadata.json</code> but claims <code className="bg-blue-100 px-1 rounded">client_uri: "https://client.dev"</code>, the server can detect this mismatch and show appropriate warnings.
                   </div>
                 </div>
               </div>
@@ -226,13 +226,13 @@ export default function HomePage() {
               <Link href="/servers">
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
                   <Database className="w-4 h-4 mr-2" />
-                  Explore CIMD for Servers
+                  Explore CIMD for OAuth Servers
                 </Button>
               </Link>
               <Link href="/clients">
                 <Button size="lg" variant="outline">
                   <Users className="w-4 h-4 mr-2" />
-                  Explore CIMD for Clients
+                  Explore CIMD for OAuth Clients
                 </Button>
               </Link>
             </div>

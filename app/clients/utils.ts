@@ -67,16 +67,7 @@ export const validateCIMDDocument = async (
         if (!uri.startsWith('https://') && !uri.startsWith('http://localhost')) {
           warnings.push({
             path: `redirect_uris[${index}]`,
-            message: 'Redirect URIs should use HTTPS for security (except localhost for development)',
-            severity: 'warning'
-          })
-        }
-
-        // Check for localhost URIs in production context
-        if (uri.includes('localhost') || uri.includes('127.0.0.1')) {
-          warnings.push({
-            path: `redirect_uris[${index}]`,
-            message: 'Localhost redirect URIs should not be used in production. Consider a separate CIMD for local development.',
+            message: 'Redirect URIs should use HTTPS for security (except localhost)',
             severity: 'warning'
           })
         }

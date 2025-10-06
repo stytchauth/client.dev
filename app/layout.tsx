@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://cimd.dev',
+    url: 'https://client.dev',
     siteName: 'CIMD',
     title: 'CIMD - Client ID Metadata Documents',
     description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Presented by Stytch.',
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     creator: '@stytch',
   },
   alternates: {
-    canonical: 'https://cimd.dev',
+    canonical: 'https://client.dev',
   },
 }
 
