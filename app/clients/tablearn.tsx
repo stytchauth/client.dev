@@ -174,10 +174,10 @@ export function LearnContent() {
           </CardHeader>
           <CardContent>
             <CodeBlock language="json">{`{
-  "client_id": "https://cimd.dev/oauth/metadata.json",
-  "client_name": "CIMD.dev",
-  "client_uri": "https://cimd.dev",
-  "redirect_uris": ["https://cimd.dev/oauth/callback"]
+  "client_id": "https://client.dev/oauth/metadata.json",
+  "client_name": "client.dev",
+  "client_uri": "https://client.dev",
+  "redirect_uris": ["https://client.dev/oauth/callback"]
 }`}</CodeBlock>
             <p className="text-sm text-gray-600 mt-4">
               This minimal document includes just the essential fields. Host this JSON at the URL specified in <code>client_id</code>.

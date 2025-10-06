@@ -178,7 +178,7 @@ export function PresentedByStytch() {
   }, []);
 
   return (
-    <Link href="https://stytch.com?utm_source=cimd.dev" target="_blank" rel="noopener noreferrer">
+    <Link href="https://stytch.com?utm_source=client.dev" target="_blank" rel="noopener noreferrer">
       <div 
         className="bg-[rgb(178,214,222)] w-[188px] cursor-pointer p-2 hover:bg-[rgb(158,194,202)] rounded-md"
         onMouseEnter={handleMouseEnter}
