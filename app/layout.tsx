@@ -7,7 +7,7 @@ import { Analytics } from '@vercel/analytics/react'
 
 export const metadata: Metadata = {
   title: {
-    default: 'CIMD - Client ID Metadata Documents',
+    default: 'CIMD - OAuth Client ID Metadata Documents',
     template: '%s | CIMD'
   },
   description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Presented by Stytch.',
@@ -36,23 +36,23 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://client.dev',
     siteName: 'CIMD',
-    title: 'CIMD - Client ID Metadata Documents',
+    title: 'CIMD - OAuth Client ID Metadata Documents',
     description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Presented by Stytch.',
     images: [
       {
-        url: '/opengraph-image.png',
+        url: 'https://client.dev/og',
         width: 1200,
         height: 630,
-        alt: 'CIMD - Client ID Metadata Documents for OAuth',
+        alt: 'CIMD - OAuth Client ID Metadata Documents',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CIMD - Client ID Metadata Documents',
+    title: 'CIMD - OAuth Client ID Metadata Documents',
     description: 'Learn about Client ID Metadata Documents (CIMD) - a new OAuth approach that lets clients identify themselves using URLs instead of preregistration. Presented by Stytch.',
-    images: ['/opengraph-image.png'],
-    creator: '@stytch',
+    images: ['https://client.dev/og'],
+    creator: '@stytchauth',
   },
   alternates: {
     canonical: 'https://client.dev',
