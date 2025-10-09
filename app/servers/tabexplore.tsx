@@ -30,25 +30,98 @@ function base64URLEncode(buffer: Uint8Array): string {
 }
 
 export function ExploreContent() {
-  const [authEndpoint, setAuthEndpoint] = useState('')
+  const [inputMode, setInputMode] = useState<'issuer' | 'manual'>('issuer')
+  const [issuerUrl, setIssuerUrl] = useState('')
+  const [authorizationEndpoint, setAuthorizationEndpoint] = useState('')
+  const [tokenEndpoint, setTokenEndpoint] = useState('')
   const [isValidating, setIsValidating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [codeVerifier, setCodeVerifier] = useState<string | null>(null)
+  const [discoveryStatus, setDiscoveryStatus] = useState<string>('')
 
   const testOAuthFlow = async () => {
-    if (!authEndpoint.trim()) return
-
     setIsValidating(true)
     setError(null)
+    setDiscoveryStatus('')
 
     try {
-      // Validate URL format
-      const url = new URL(authEndpoint)
+      let authEndpoint: string
+      let tokenEndpointUrl: string
 
-      if (!url.protocol.startsWith('https')) {
-        setError('Authorization endpoint must use HTTPS')
-        setIsValidating(false)
-        return
+      if (inputMode === 'issuer') {
+        // Issuer URL mode - discover endpoints
+        if (!issuerUrl.trim()) {
+          setError('Please provide an issuer URL')
+          setIsValidating(false)
+          return
+        }
+
+        // Validate URL format
+        const url = new URL(issuerUrl)
+
+        if (!url.protocol.startsWith('https')) {
+          setError('Issuer URL must use HTTPS')
+          setIsValidating(false)
+          return
+        }
+
+        // Extract base URL
+        const baseUrlForStorage = `${url.protocol}//${url.host}`
+
+        // Fetch authorization server metadata
+        setDiscoveryStatus('Fetching authorization server metadata...')
+        const authServerMetadataUrl = `${baseUrlForStorage}/.well-known/oauth-authorization-server`
+        const authServerResponse = await fetch(authServerMetadataUrl)
+
+        if (!authServerResponse.ok) {
+          setError(`Failed to fetch authorization server metadata: ${authServerResponse.status}`)
+          setIsValidating(false)
+          return
+        }
+
+        const authServerMetadata = await authServerResponse.json()
+
+        if (!authServerMetadata.authorization_endpoint) {
+          setError('No authorization endpoint found in authorization server metadata')
+          setIsValidating(false)
+          return
+        }
+
+        if (!authServerMetadata.token_endpoint) {
+          setError('No token endpoint found in authorization server metadata')
+          setIsValidating(false)
+          return
+        }
+
+        authEndpoint = authServerMetadata.authorization_endpoint
+        tokenEndpointUrl = authServerMetadata.token_endpoint
+        setDiscoveryStatus('Starting OAuth flow...')
+      } else {
+        // Manual mode - use provided endpoints
+        if (!authorizationEndpoint.trim() || !tokenEndpoint.trim()) {
+          setError('Please provide both authorization and token endpoints')
+          setIsValidating(false)
+          return
+        }
+
+        // Validate URLs
+        try {
+          const authUrl = new URL(authorizationEndpoint)
+          const tokenUrl = new URL(tokenEndpoint)
+
+          if (!authUrl.protocol.startsWith('https') || !tokenUrl.protocol.startsWith('https')) {
+            setError('Endpoints must use HTTPS')
+            setIsValidating(false)
+            return
+          }
+
+          authEndpoint = authorizationEndpoint
+          tokenEndpointUrl = tokenEndpoint
+        } catch (err) {
+          setError('Invalid URL format')
+          setIsValidating(false)
+          return
+        }
       }
 
       // Generate PKCE parameters
@@ -75,8 +148,9 @@ export function ExploreContent() {
       const authUrl = `${authEndpoint}?${params.toString()}`
 
       // Store OAuth flow state in localStorage for callback page
+      // Token endpoint is already discovered/provided, so callback can use it directly
       const flowState = {
-        authEndpoint: authEndpoint,
+        tokenEndpoint: tokenEndpointUrl,  // Token endpoint ready to use
         codeVerifier: verifier,
         codeChallenge: challenge,
         state: state,
@@ -87,11 +161,13 @@ export function ExploreContent() {
       localStorage.setItem('oauth_flow_state', JSON.stringify(flowState))
 
       // Open in new window
-      window.open(authUrl, '_blank', 'width=600,height=700')
+      window.location.href = authUrl;
 
+      setDiscoveryStatus('')
       setIsValidating(false)
     } catch (err) {
-      setError(`Invalid URL: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      setError(`Error: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      setDiscoveryStatus('')
       setIsValidating(false)
     }
   }
@@ -107,8 +183,8 @@ export function ExploreContent() {
           <div className="flex-1">
             <h3 className="font-semibold text-blue-800 mb-2">OAuth Flow Tester</h3>
             <p className="text-blue-700">
-              Test your authorization server's CIMD support by initiating an OAuth flow with client.dev's metadata document.
-              This will open a new window with the authorization request.
+              Test your authorization server's CIMD support. Provide your issuer URL for automatic endpoint discovery,
+              or manually specify your authorization and token endpoints. We'll initiate an OAuth flow using client.dev's metadata document.
             </p>
           </div>
         </div>
@@ -122,24 +198,90 @@ export function ExploreContent() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Authorization Endpoint (HTTPS required)
+            {/* Mode Selector */}
+            <div className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="inputMode"
+                  checked={inputMode === 'issuer'}
+                  onChange={() => setInputMode('issuer')}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm font-medium">Issuer URL</span>
               </label>
-              <input
-                type="url"
-                value={authEndpoint}
-                onChange={(e) => {
-                  setAuthEndpoint(e.target.value)
-                  setError(null)
-                }}
-                placeholder="https://bart.vanshaj.dev/oauth/authorize"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Your authorization server's OAuth 2.0 authorization endpoint
-              </p>
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="inputMode"
+                  checked={inputMode === 'manual'}
+                  onChange={() => setInputMode('manual')}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm font-medium">Manual Endpoints</span>
+              </label>
             </div>
+
+            {inputMode === 'issuer' ? (
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Issuer URL (HTTPS required)
+                </label>
+                <input
+                  type="url"
+                  value={issuerUrl}
+                  onChange={(e) => {
+                    setIssuerUrl(e.target.value)
+                    setError(null)
+                  }}
+                  placeholder="https://login.vanshaj.dev"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <p className="text-sm text-gray-500 mt-1">
+                  The base URL of your authorization server. We'll discover endpoints from <code className="bg-gray-100 px-1 rounded">/.well-known/oauth-authorization-server</code>
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Authorization Endpoint (HTTPS required)
+                  </label>
+                  <input
+                    type="url"
+                    value={authorizationEndpoint}
+                    onChange={(e) => {
+                      setAuthorizationEndpoint(e.target.value)
+                      setError(null)
+                    }}
+                    placeholder="https://bart.vanshaj.dev/oauth/authorize"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Token Endpoint (HTTPS required)
+                  </label>
+                  <input
+                    type="url"
+                    value={tokenEndpoint}
+                    onChange={(e) => {
+                      setTokenEndpoint(e.target.value)
+                      setError(null)
+                    }}
+                    placeholder="https://login.vanshaj.dev/v1/oauth2/token"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            )}
+
+            {discoveryStatus && (
+              <div className="flex items-start space-x-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mt-0.5" />
+                <p className="text-sm text-blue-700">{discoveryStatus}</p>
+              </div>
+            )}
 
             {error && (
               <div className="flex items-start space-x-2 p-3 bg-red-50 border border-red-200 rounded-md">
@@ -173,7 +315,7 @@ export function ExploreContent() {
 
             <Button
               onClick={testOAuthFlow}
-              disabled={isValidating || !authEndpoint.trim()}
+              disabled={isValidating || (inputMode === 'issuer' ? !issuerUrl.trim() : (!authorizationEndpoint.trim() || !tokenEndpoint.trim()))}
               className="w-full"
             >
               {isValidating ? (
@@ -198,14 +340,32 @@ export function ExploreContent() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="space-y-2 text-sm">
-              <p className="font-medium">When you click "Start OAuth Flow", your server should:</p>
-              <ol className="list-decimal list-inside space-y-1 text-gray-600 ml-2">
+              {inputMode === 'issuer' ? (
+                <>
+                  <p className="font-medium">When you click "Start OAuth Flow", the tester will:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-gray-600 ml-2">
+                    <li>Fetch <code className="bg-gray-100 px-1 rounded">{`{issuer}/.well-known/oauth-authorization-server`}</code></li>
+                    <li>Extract the <code className="bg-gray-100 px-1 rounded">authorization_endpoint</code> and <code className="bg-gray-100 px-1 rounded">token_endpoint</code></li>
+                    <li>Redirect to the authorization endpoint with PKCE parameters</li>
+                  </ol>
+                </>
+              ) : (
+                <>
+                  <p className="font-medium">When you click "Start OAuth Flow", the tester will:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-gray-600 ml-2">
+                    <li>Use the authorization and token endpoints you provided</li>
+                    <li>Redirect to the authorization endpoint with PKCE parameters</li>
+                  </ol>
+                </>
+              )}
+              <p className="font-medium mt-4">Your authorization server should then:</p>
+              <ol className="list-decimal list-inside space-y-1 text-gray-600 ml-2" start={inputMode === 'issuer' ? 4 : 3}>
                 <li>Receive the authorization request with <code className="bg-gray-100 px-1 rounded">client_id</code> as a URL</li>
                 <li>Fetch the metadata from <code className="bg-gray-100 px-1 rounded">https://client.dev/oauth/metadata.json</code></li>
                 <li>Validate the metadata structure and required fields</li>
                 <li>Verify the <code className="bg-gray-100 px-1 rounded">redirect_uri</code> matches what's in the metadata</li>
                 <li>Store the <code className="bg-gray-100 px-1 rounded">code_challenge</code> for PKCE validation</li>
-                <li>Display a consent screen showing client.dev's name and information</li>
+                <li>Display a consent screen showing client.dev's information</li>
               </ol>
             </div>
           </CardContent>
