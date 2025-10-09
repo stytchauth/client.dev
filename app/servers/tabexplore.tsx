@@ -30,26 +30,76 @@ function base64URLEncode(buffer: Uint8Array): string {
 }
 
 export function ExploreContent() {
-  const [authEndpoint, setAuthEndpoint] = useState('')
+  const [resourceServer, setResourceServer] = useState('')
   const [isValidating, setIsValidating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [codeVerifier, setCodeVerifier] = useState<string | null>(null)
+  const [discoveryStatus, setDiscoveryStatus] = useState<string>('')
 
   const testOAuthFlow = async () => {
-    if (!authEndpoint.trim()) return
+    if (!resourceServer.trim()) return
 
     setIsValidating(true)
     setError(null)
+    setDiscoveryStatus('')
 
     try {
       // Validate URL format
-      const url = new URL(authEndpoint)
+      const url = new URL(resourceServer)
 
       if (!url.protocol.startsWith('https')) {
-        setError('Authorization endpoint must use HTTPS')
+        setError('Resource server must use HTTPS')
         setIsValidating(false)
         return
       }
+
+      // Extract base URL
+      const baseUrl = `${url.protocol}//${url.host}`
+
+      // Step 1: Fetch resource server metadata
+      setDiscoveryStatus('Fetching resource server metadata...')
+      const resourceMetadataUrl = `${baseUrl}/.well-known/oauth-protected-resource`
+      const resourceResponse = await fetch(resourceMetadataUrl)
+
+      if (!resourceResponse.ok) {
+        setError(`Failed to fetch resource server metadata: ${resourceResponse.status}`)
+        setIsValidating(false)
+        return
+      }
+
+      const resourceMetadata = await resourceResponse.json()
+
+      if (!resourceMetadata.authorization_servers || resourceMetadata.authorization_servers.length === 0) {
+        setError('No authorization servers found in resource metadata')
+        setIsValidating(false)
+        return
+      }
+
+      // Step 2: Get authorization server issuer
+      const authServerIssuer = resourceMetadata.authorization_servers[0]
+      setDiscoveryStatus('Fetching authorization server metadata...')
+
+      // Step 3: Fetch authorization server metadata
+      const authServerMetadataUrl = `${authServerIssuer}/.well-known/oauth-authorization-server`
+      const authServerResponse = await fetch(authServerMetadataUrl)
+
+      if (!authServerResponse.ok) {
+        setError(`Failed to fetch authorization server metadata: ${authServerResponse.status}`)
+        setIsValidating(false)
+        return
+      }
+
+      const authServerMetadata = await authServerResponse.json()
+
+      if (!authServerMetadata.authorization_endpoint) {
+        setError('No authorization endpoint found in authorization server metadata')
+        setIsValidating(false)
+        return
+      }
+
+      // Step 4: Use the discovered authorization endpoint
+      const authEndpoint = authServerMetadata.authorization_endpoint
+      setDiscoveryStatus('Starting OAuth flow...')
 
       // Generate PKCE parameters
       const verifier = generateCodeVerifier()
@@ -75,8 +125,9 @@ export function ExploreContent() {
       const authUrl = `${authEndpoint}?${params.toString()}`
 
       // Store OAuth flow state in localStorage for callback page
+      // Store the resource server base URL, not the authorization endpoint
       const flowState = {
-        authEndpoint: authEndpoint,
+        authEndpoint: baseUrl,  // Store RS base URL for callback to discover
         codeVerifier: verifier,
         codeChallenge: challenge,
         state: state,
@@ -87,11 +138,13 @@ export function ExploreContent() {
       localStorage.setItem('oauth_flow_state', JSON.stringify(flowState))
 
       // Open in new window
-      window.open(authUrl, '_blank', 'width=600,height=700')
+      window.location.href = authUrl;
 
+      setDiscoveryStatus('')
       setIsValidating(false)
     } catch (err) {
-      setError(`Invalid URL: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      setError(`Error: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      setDiscoveryStatus('')
       setIsValidating(false)
     }
   }
@@ -107,8 +160,8 @@ export function ExploreContent() {
           <div className="flex-1">
             <h3 className="font-semibold text-blue-800 mb-2">OAuth Flow Tester</h3>
             <p className="text-blue-700">
-              Test your authorization server's CIMD support by initiating an OAuth flow with client.dev's metadata document.
-              This will open a new window with the authorization request.
+              Test your authorization server's CIMD support by providing your resource server URL. We'll automatically discover
+              your authorization endpoint using OAuth metadata discovery, then initiate the flow with client.dev's metadata document.
             </p>
           </div>
         </div>
@@ -124,22 +177,29 @@ export function ExploreContent() {
           <CardContent className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">
-                Authorization Endpoint (HTTPS required)
+                Resource Server URL (HTTPS required)
               </label>
               <input
                 type="url"
-                value={authEndpoint}
+                value={resourceServer}
                 onChange={(e) => {
-                  setAuthEndpoint(e.target.value)
+                  setResourceServer(e.target.value)
                   setError(null)
                 }}
-                placeholder="https://bart.vanshaj.dev/oauth/authorize"
+                placeholder="https://bart.vanshaj.dev"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <p className="text-sm text-gray-500 mt-1">
-                Your authorization server's OAuth 2.0 authorization endpoint
+                The base URL of your resource server. We'll discover the authorization endpoint automatically.
               </p>
             </div>
+
+            {discoveryStatus && (
+              <div className="flex items-start space-x-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mt-0.5" />
+                <p className="text-sm text-blue-700">{discoveryStatus}</p>
+              </div>
+            )}
 
             {error && (
               <div className="flex items-start space-x-2 p-3 bg-red-50 border border-red-200 rounded-md">
@@ -173,7 +233,7 @@ export function ExploreContent() {
 
             <Button
               onClick={testOAuthFlow}
-              disabled={isValidating || !authEndpoint.trim()}
+              disabled={isValidating || !resourceServer.trim()}
               className="w-full"
             >
               {isValidating ? (
@@ -198,14 +258,22 @@ export function ExploreContent() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="space-y-2 text-sm">
-              <p className="font-medium">When you click "Start OAuth Flow", your server should:</p>
+              <p className="font-medium">When you click "Start OAuth Flow", the tester will:</p>
               <ol className="list-decimal list-inside space-y-1 text-gray-600 ml-2">
+                <li>Fetch <code className="bg-gray-100 px-1 rounded">{`{resource_server}/.well-known/oauth-protected-resource`}</code></li>
+                <li>Extract the authorization server issuer from <code className="bg-gray-100 px-1 rounded">authorization_servers</code></li>
+                <li>Fetch <code className="bg-gray-100 px-1 rounded">{`{issuer}/.well-known/oauth-authorization-server`}</code></li>
+                <li>Extract the <code className="bg-gray-100 px-1 rounded">authorization_endpoint</code></li>
+                <li>Redirect to the authorization endpoint with PKCE parameters</li>
+              </ol>
+              <p className="font-medium mt-4">Your authorization server should then:</p>
+              <ol className="list-decimal list-inside space-y-1 text-gray-600 ml-2" start={6}>
                 <li>Receive the authorization request with <code className="bg-gray-100 px-1 rounded">client_id</code> as a URL</li>
                 <li>Fetch the metadata from <code className="bg-gray-100 px-1 rounded">https://client.dev/oauth/metadata.json</code></li>
                 <li>Validate the metadata structure and required fields</li>
                 <li>Verify the <code className="bg-gray-100 px-1 rounded">redirect_uri</code> matches what's in the metadata</li>
                 <li>Store the <code className="bg-gray-100 px-1 rounded">code_challenge</code> for PKCE validation</li>
-                <li>Display a consent screen showing client.dev's name and information</li>
+                <li>Display a consent screen showing client.dev's information</li>
               </ol>
             </div>
           </CardContent>
