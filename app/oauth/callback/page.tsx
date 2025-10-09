@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react"
@@ -38,7 +38,7 @@ interface AuthorizationServerMetadata {
   [key: string]: any
 }
 
-export default function OAuthCallbackPage() {
+function OAuthCallbackContent() {
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [message, setMessage] = useState('')
@@ -336,5 +336,22 @@ export default function OAuthCallbackPage() {
         </div>
       </Main>
     </div>
+  )
+}
+
+export default function OAuthCallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white text-black">
+        <Header />
+        <Main>
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+          </div>
+        </Main>
+      </div>
+    }>
+      <OAuthCallbackContent />
+    </Suspense>
   )
 }
