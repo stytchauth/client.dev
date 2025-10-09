@@ -8,7 +8,7 @@ import { Header } from '@/components/ui/header'
 import { Main } from "@/components/ui/main"
 
 interface OAuthFlowState {
-  authEndpoint: string
+  tokenEndpoint: string  // Token endpoint (discovered or provided before flow)
   codeVerifier: string
   codeChallenge: string
   state: string
@@ -23,18 +23,6 @@ interface TokenResponse {
   expires_in?: number
   id_token?: string
   refresh_token?: string
-  [key: string]: any
-}
-
-interface ResourceServerMetadata {
-  resource: string
-  authorization_servers: string[]
-}
-
-interface AuthorizationServerMetadata {
-  issuer: string
-  authorization_endpoint: string
-  token_endpoint: string
   [key: string]: any
 }
 
@@ -55,8 +43,6 @@ function OAuthCallbackContent() {
       // Initialize steps
       setSteps([
         { text: 'Validating OAuth callback parameters', status: 'loading' },
-        { text: 'Fetching resource server metadata', status: 'pending' },
-        { text: 'Fetching authorization server metadata', status: 'pending' },
         { text: 'Exchanging authorization code for tokens', status: 'pending' },
         { text: 'Decoding tokens', status: 'pending' }
       ])
@@ -103,61 +89,18 @@ function OAuthCallbackContent() {
 
         updateStep(0, 'success')
 
-        // Step 2: Fetch resource server metadata
+        // Step 2: Exchange code for tokens
+        // Token endpoint was already discovered/provided before the flow started
         updateStep(1, 'loading')
 
-        // Extract base URL from authorization endpoint
-        const authEndpointUrl = new URL(flowState.authEndpoint)
-        const baseUrl = `${authEndpointUrl.protocol}//${authEndpointUrl.host}`
-
-        const resourceMetadataUrl = `${baseUrl}/.well-known/oauth-protected-resource`
-        const resourceResponse = await fetch(resourceMetadataUrl)
-
-        if (!resourceResponse.ok) {
+        if (!flowState.tokenEndpoint) {
           updateStep(1, 'error')
           setStatus('error')
-          setMessage(`Failed to fetch resource server metadata: ${resourceResponse.status}`)
+          setMessage('Token endpoint not found in stored state')
           return
         }
 
-        const resourceMetadata: ResourceServerMetadata = await resourceResponse.json()
-
-        if (!resourceMetadata.authorization_servers || resourceMetadata.authorization_servers.length === 0) {
-          updateStep(1, 'error')
-          setStatus('error')
-          setMessage('No authorization servers found in resource metadata')
-          return
-        }
-
-        const authServerIssuer = resourceMetadata.authorization_servers[0]
-        updateStep(1, 'success')
-
-        // Step 3: Fetch authorization server metadata
-        updateStep(2, 'loading')
-        const authServerMetadataUrl = `${authServerIssuer}/.well-known/oauth-authorization-server`
-        const authServerResponse = await fetch(authServerMetadataUrl)
-
-        if (!authServerResponse.ok) {
-          updateStep(2, 'error')
-          setStatus('error')
-          setMessage(`Failed to fetch authorization server metadata: ${authServerResponse.status}`)
-          return
-        }
-
-        const authServerMetadata: AuthorizationServerMetadata = await authServerResponse.json()
-
-        if (!authServerMetadata.token_endpoint) {
-          updateStep(2, 'error')
-          setStatus('error')
-          setMessage('No token endpoint found in authorization server metadata')
-          return
-        }
-
-        updateStep(2, 'success')
-
-        // Step 4: Exchange code for tokens
-        updateStep(3, 'loading')
-        const tokenEndpoint = authServerMetadata.token_endpoint
+        const tokenEndpoint = flowState.tokenEndpoint
 
         const tokenRequestBody = new URLSearchParams({
           grant_type: 'authorization_code',
@@ -177,7 +120,7 @@ function OAuthCallbackContent() {
 
         if (!tokenExchangeResponse.ok) {
           const errorData = await tokenExchangeResponse.text()
-          updateStep(3, 'error')
+          updateStep(1, 'error')
           setStatus('error')
           setMessage(`Token exchange failed: ${tokenExchangeResponse.status} - ${errorData}`)
           return
@@ -185,10 +128,10 @@ function OAuthCallbackContent() {
 
         const tokens: TokenResponse = await tokenExchangeResponse.json()
         setTokenResponse(tokens)
-        updateStep(3, 'success')
+        updateStep(1, 'success')
 
-        // Step 5: Decode ID token if present
-        updateStep(4, 'loading')
+        // Step 3: Decode ID token if present
+        updateStep(2, 'loading')
         if (tokens.id_token) {
           try {
             // Decode JWT (just the payload, not verifying signature for demo purposes)
@@ -201,7 +144,7 @@ function OAuthCallbackContent() {
             console.error('Failed to decode ID token:', e)
           }
         }
-        updateStep(4, 'success')
+        updateStep(2, 'success')
 
         // Clean up localStorage
         localStorage.removeItem('oauth_flow_state')
