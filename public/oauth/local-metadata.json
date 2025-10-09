@@ -1,0 +1,12 @@
+{
+  "client_id": "https://client.dev/oauth/local-metadata.json",
+  "client_name": "client.dev (localhost)",
+  "client_uri": "https://client.dev",
+  "redirect_uris": [
+    "https://client.dev/oauth/callback",
+    "http://localhost:3000/oauth/callback"
+  ],
+  "grant_types": ["authorization_code"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none"
+}
