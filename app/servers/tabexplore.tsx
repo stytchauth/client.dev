@@ -234,7 +234,7 @@ export function ExploreContent() {
                     setIssuerUrl(e.target.value)
                     setError(null)
                   }}
-                  placeholder="https://login.example.com"
+                  placeholder="https://login.client.dev"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <p className="text-sm text-gray-500 mt-1">
@@ -254,7 +254,7 @@ export function ExploreContent() {
                       setAuthorizationEndpoint(e.target.value)
                       setError(null)
                     }}
-                    placeholder="https://login.example.com/oauth/authorize"
+                    placeholder="https://as.client.dev/oauth/authorize"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -269,7 +269,7 @@ export function ExploreContent() {
                       setTokenEndpoint(e.target.value)
                       setError(null)
                     }}
-                    placeholder="https://login.example.com/oauth/token"
+                    placeholder="https://login.client.dev/v1/oauth2/token"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -396,32 +396,27 @@ export function ExploreContent() {
   "client_id": "https://client.dev/oauth/metadata.json",
   "client_name": "client.dev",
   "client_uri": "https://client.dev",
-  "logo_uri": "https://client.dev/logo.png",
   "redirect_uris": [
     "https://client.dev/oauth/callback"
   ],
   "grant_types": ["authorization_code"],
   "response_types": ["code"],
-  "token_endpoint_auth_method": "private_key_jwt",
-  "jwks_uri": "https://client.dev/.well-known/jwks.json"
+  "token_endpoint_auth_method": "none"
 }`}
               </pre>
             </div>
           </CardContent>
         </Card>
 
-        {/* Security Notice */}
         <Card className="border border-amber-200 bg-amber-50">
           <CardContent className="p-4">
             <div className="flex items-start space-x-3">
-              <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
               <div className="text-sm">
                 <p className="font-medium text-amber-900">Testing Note</p>
                 <p className="text-amber-800 mt-1">
-                  This test opens a new window to your authorization endpoint with PKCE enabled. Make sure your server is configured to accept
-                  requests and can fetch metadata from client.dev. The callback will redirect to client.dev/oauth/callback,
-                  which is a static page for testing purposes. The <code className="bg-amber-100 px-1 rounded">code_verifier</code> is displayed
-                  after starting the flow - you'll need it to complete the token exchange.
+                  This test opens a new window to your authorization endpoint with PKCE enabled. Make sure your server
+                  is configured to accept requests and can fetch metadata from client.dev. The callback will redirect
+                  to client.dev/oauth/callback, which will exchange the authorization code for tokens.
                 </p>
               </div>
             </div>

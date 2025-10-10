@@ -1,6 +1,6 @@
 # Client ID Metadata Documents Web
 
-This repository contains the public-facing website that showcases [OAuth Client ID Metadata Documents](https://datatracker.ietf.org/doc/draft-parecki-oauth-client-id-metadata-document/).
+This repository contains the public-facing website that showcases [OAuth Client ID Metadata Documents](https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/).
 
 ## Overview
 

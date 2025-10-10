@@ -154,25 +154,34 @@ export function ExploreContent() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex space-x-4">
-              <Button
-                variant={inputType === 'url' ? 'default' : 'outline'}
-                onClick={() => {
-                  setInputType('url')
-                  setValidationResult(null)
-                }}
-              >
-                Client ID URL
-              </Button>
-              <Button
-                variant={inputType === 'json' ? 'default' : 'outline'}
-                onClick={() => {
-                  setInputType('json')
-                  setValidationResult(null)
-                }}
-              >
-                Raw JSON
-              </Button>
+            {/* Mode Selector */}
+            <div className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="inputMode"
+                  checked={inputType === 'url'}
+                  onChange={() => {
+                    setInputType('url')
+                    setValidationResult(null)
+                  }}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm font-medium">Client ID URL</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="inputMode"
+                  checked={inputType === 'json'}
+                  onChange={() => {
+                    setInputType('json')
+                    setValidationResult(null)
+                  }}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm font-medium">Raw JSON</span>
+              </label>
             </div>
 
             <div className="space-y-3">
@@ -204,8 +213,7 @@ export function ExploreContent() {
                       "redirect_uris": ["https://client.dev/oauth/callback"],
                       "grant_types": ["authorization_code"],
                       "response_types": ["code"],
-                      "token_endpoint_auth_method": "private_key_jwt",
-                      "jwks_uri": "https://client.dev/.well-known/jwks.json"
+                      "token_endpoint_auth_method": "none"
                     }, null, 2)}
                     className="w-full min-h-[200px] font-mono text-sm"
                   />

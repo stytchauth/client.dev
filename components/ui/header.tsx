@@ -15,7 +15,7 @@ export function Header({ currentPage }: HeaderProps) {
           <p className="text-amber-800">
             <strong>Note:</strong> CIMD is currently an{' '}
             <Link
-              href="https://datatracker.ietf.org/doc/draft-parecki-oauth-client-id-metadata-document/"
+              href="https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/"
               target="_blank"
               className="underline hover:text-amber-900"
             >
