@@ -164,7 +164,7 @@ export default function HomePage() {
             <h2 className="text-2xl font-bold">Learn More</h2>
             <div className="grid md:grid-cols-3 gap-6">
               <Link
-                href="https://datatracker.ietf.org/doc/draft-parecki-oauth-client-id-metadata-document/"
+                href="https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/"
                 target="_blank"
                 className="block"
               >
