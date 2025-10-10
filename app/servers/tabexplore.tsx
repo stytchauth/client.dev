@@ -234,7 +234,7 @@ export function ExploreContent() {
                     setIssuerUrl(e.target.value)
                     setError(null)
                   }}
-                  placeholder="https://login.vanshaj.dev"
+                  placeholder="https://login.example.com"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <p className="text-sm text-gray-500 mt-1">
@@ -254,7 +254,7 @@ export function ExploreContent() {
                       setAuthorizationEndpoint(e.target.value)
                       setError(null)
                     }}
-                    placeholder="https://bart.vanshaj.dev/oauth/authorize"
+                    placeholder="https://login.example.com/oauth/authorize"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -269,7 +269,7 @@ export function ExploreContent() {
                       setTokenEndpoint(e.target.value)
                       setError(null)
                     }}
-                    placeholder="https://login.vanshaj.dev/v1/oauth2/token"
+                    placeholder="https://login.example.com/oauth/token"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
