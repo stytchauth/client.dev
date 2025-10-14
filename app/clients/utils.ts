@@ -14,7 +14,6 @@ export interface ValidationResult {
 export const validateCIMDDocument = async (
   metadata: any,
   sourceUrl: string | null,
-  checkReachability: boolean
 ): Promise<ValidationResult> => {
   const errors: ValidationError[] = []
   const warnings: ValidationError[] = []
@@ -37,6 +36,20 @@ export const validateCIMDDocument = async (
       path: 'client_id',
       message: 'client_id must be an HTTPS URL',
       severity: 'error'
+    })
+  }
+
+  if (!metadata.client_uri) {
+    warnings.push({
+      path: 'client_uri',
+      message: 'Missing recommended field: client_uri',
+      severity: 'warning'
+    })
+  } else if (metadata.client_uri.hostname !== metadata.client_id.hostname) {
+    warnings.push({
+      path: 'client_uri',
+      message: 'client_uri should share the same domain as client_id',
+      severity: 'warning'
     })
   }
 
@@ -64,7 +77,7 @@ export const validateCIMDDocument = async (
         })
       } else {
         // Check for non-HTTPS URIs (warning, not error)
-        if (!uri.startsWith('https://') && !uri.startsWith('http://localhost')) {
+        if (!uri.startsWith('https://') && !uri.startsWith('http://localhost') && !uri.startsWith('http://127.0.0.1')) {
           warnings.push({
             path: `redirect_uris[${index}]`,
             message: 'Redirect URIs should use HTTPS for security (except localhost)',
@@ -86,7 +99,7 @@ export const validateCIMDDocument = async (
   }
 
   // Validate optional URI fields
-  const uriFields = ['logo_uri', 'client_uri', 'policy_uri', 'tos_uri', 'jwks_uri']
+  const uriFields = ['logo_uri', 'policy_uri', 'tos_uri', 'jwks_uri']
   uriFields.forEach(field => {
     if (metadata[field]) {
       if (typeof metadata[field] !== 'string') {
@@ -122,45 +135,6 @@ export const validateCIMDDocument = async (
       message: 'Client name is very long (>200 chars)',
       severity: 'warning'
     })
-  }
-
-  // Reachability checks (if enabled)
-  if (checkReachability) {
-    const urlsToCheck: Array<{ field: string; url: string }> = []
-
-    // Collect URLs to check
-    uriFields.forEach(field => {
-      if (metadata[field] && typeof metadata[field] === 'string' && metadata[field].startsWith('https://')) {
-        urlsToCheck.push({ field, url: metadata[field] })
-      }
-    })
-
-    // Also check redirect URIs
-    if (metadata.redirect_uris && Array.isArray(metadata.redirect_uris)) {
-      metadata.redirect_uris.forEach((uri: any, index: number) => {
-        if (typeof uri === 'string' && uri.startsWith('https://')) {
-          urlsToCheck.push({ field: `redirect_uris[${index}]`, url: uri })
-        }
-      })
-    }
-
-    // Perform reachability checks
-    for (const { field, url } of urlsToCheck) {
-      try {
-        await fetch(url, {
-          method: 'HEAD',
-          mode: 'no-cors' // Avoid CORS issues for reachability check
-        })
-        // Note: no-cors mode means we can't check the actual status,
-        // but if the request completes without error, the URL is likely reachable
-      } catch (error) {
-        warnings.push({
-          path: field,
-          message: `URL may not be reachable: ${error instanceof Error ? error.message : 'Unknown error'}`,
-          severity: 'warning'
-        })
-      }
-    }
   }
 
   return {
