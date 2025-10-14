@@ -1,9 +1,26 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Search, AlertCircle, Play, ExternalLink } from "lucide-react"
+import { Search, AlertCircle, Play, ExternalLink, CheckCircle, Loader2, ChevronDown, ChevronRight } from "lucide-react"
+
+interface TokenResponse {
+  access_token?: string
+  token_type?: string
+  expires_in?: number
+  id_token?: string
+  refresh_token?: string
+  [key: string]: any
+}
+
+interface OAuthResult {
+  status: 'success' | 'error'
+  message: string
+  steps: Array<{text: string, status: 'pending' | 'loading' | 'success' | 'error'}>
+  tokenResponse?: TokenResponse
+  decodedIdToken?: any
+}
 
 // Helper function to generate PKCE code verifier
 function generateCodeVerifier(): string {
@@ -38,11 +55,133 @@ export function ExploreContent() {
   const [error, setError] = useState<string | null>(null)
   const [codeVerifier, setCodeVerifier] = useState<string | null>(null)
   const [discoveryStatus, setDiscoveryStatus] = useState<string>('')
+  const [oauthResult, setOAuthResult] = useState<OAuthResult | null>(null)
+  const [flowSteps, setFlowSteps] = useState<Array<{text: string, status: 'pending' | 'loading' | 'success' | 'error'}>>([])
+  const [showTokenResponse, setShowTokenResponse] = useState(false)
+  const [showDecodedToken, setShowDecodedToken] = useState(false)
+
+  const updateStep = (index: number, status: 'pending' | 'loading' | 'success' | 'error') => {
+    setFlowSteps(prev => prev.map((step, i) => i === index ? {...step, status} : step))
+  }
+
+  // Listen for postMessage from OAuth callback
+  useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      // Validate origin for security
+      if (event.origin !== window.location.origin) {
+        return
+      }
+
+      // Check if this is an OAuth callback message
+      if (event.data && event.data.type === 'oauth-callback') {
+        // Handle error from callback
+        if (event.data.error) {
+          setFlowSteps([
+            { text: 'Validating OAuth callback parameters', status: 'error' }
+          ])
+          setOAuthResult({
+            status: 'error',
+            message: event.data.error,
+            steps: [{ text: 'Validating OAuth callback parameters', status: 'error' }]
+          })
+          return
+        }
+
+        // Initialize steps for token exchange
+        setFlowSteps([
+          { text: 'Received authorization code', status: 'success' },
+          { text: 'Exchanging authorization code for tokens', status: 'loading' },
+          { text: 'Decoding tokens', status: 'pending' }
+        ])
+
+        const { code, flowState } = event.data
+
+        try {
+          // Exchange code for tokens
+          const tokenRequestBody = new URLSearchParams({
+            grant_type: 'authorization_code',
+            code: code,
+            redirect_uri: flowState.redirectUri,
+            client_id: flowState.clientId,
+            code_verifier: flowState.codeVerifier
+          })
+
+          const tokenExchangeResponse = await fetch(flowState.tokenEndpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: tokenRequestBody.toString()
+          })
+
+          if (!tokenExchangeResponse.ok) {
+            const errorData = await tokenExchangeResponse.text()
+            updateStep(1, 'error')
+            setOAuthResult({
+              status: 'error',
+              message: `Token exchange failed: ${tokenExchangeResponse.status} - ${errorData}`,
+              steps: flowSteps
+            })
+            return
+          }
+
+          const tokens: TokenResponse = await tokenExchangeResponse.json()
+          updateStep(1, 'success')
+
+          // Decode ID token if present
+          updateStep(2, 'loading')
+          let decodedIdToken = null
+          if (tokens.id_token) {
+            try {
+              const parts = tokens.id_token.split('.')
+              if (parts.length === 3) {
+                decodedIdToken = JSON.parse(atob(parts[1]))
+              }
+            } catch (e) {
+              console.error('Failed to decode ID token:', e)
+            }
+          }
+          updateStep(2, 'success')
+
+          // Set final result
+          const finalSteps = [
+            { text: 'Received authorization code', status: 'success' as const },
+            { text: 'Exchanging authorization code for tokens', status: 'success' as const },
+            { text: 'Decoding tokens', status: 'success' as const }
+          ]
+          setFlowSteps(finalSteps)
+          setOAuthResult({
+            status: 'success',
+            message: 'OAuth flow completed successfully!',
+            steps: finalSteps,
+            tokenResponse: tokens,
+            decodedIdToken: decodedIdToken
+          })
+
+          // Clean up localStorage
+          localStorage.removeItem('oauth_flow_state')
+          setCodeVerifier(null)
+
+        } catch (err) {
+          updateStep(1, 'error')
+          setOAuthResult({
+            status: 'error',
+            message: `Error: ${err instanceof Error ? err.message : 'Unknown error'}`,
+            steps: flowSteps
+          })
+        }
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [])
 
   const testOAuthFlow = async () => {
     setIsValidating(true)
     setError(null)
     setDiscoveryStatus('')
+    setOAuthResult(null) // Clear previous results
 
     try {
       let authEndpoint: string
@@ -160,8 +299,15 @@ export function ExploreContent() {
       }
       localStorage.setItem('oauth_flow_state', JSON.stringify(flowState))
 
-      // Open in new window
-      window.location.href = authUrl;
+      // Open in popup window
+      const popup = window.open(authUrl, 'oauth-popup', 'width=600,height=700')
+
+      if (!popup) {
+        setError('Popup was blocked. Please allow popups for this site.')
+        setDiscoveryStatus('')
+        setIsValidating(false)
+        return
+      }
 
       setDiscoveryStatus('')
       setIsValidating(false)
@@ -330,6 +476,105 @@ export function ExploreContent() {
                 </div>
               )}
             </Button>
+
+            {/* Flow Progress - shown inline */}
+            {flowSteps.length > 0 && (
+              <div className="mt-4 space-y-4">
+                <div className="border-t pt-4">
+                  <h4 className="font-semibold text-sm mb-3">Flow Progress</h4>
+                  <div className="space-y-3">
+                    {flowSteps.map((step, index) => (
+                      <div key={index} className="flex items-center space-x-3">
+                        {step.status === 'loading' && <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />}
+                        {step.status === 'success' && <CheckCircle className="w-5 h-5 text-green-500" />}
+                        {step.status === 'error' && <AlertCircle className="w-5 h-5 text-red-500" />}
+                        {step.status === 'pending' && <div className="w-5 h-5 rounded-full border-2 border-gray-300" />}
+                        <span className={`text-sm ${step.status === 'error' ? 'text-red-700' : 'text-gray-700'}`}>
+                          {step.text}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Status Message */}
+                {oauthResult && (
+                  <div className={`p-3 rounded-md ${oauthResult.status === 'success' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+                    <div className="flex items-start space-x-3">
+                      {oauthResult.status === 'success' ? (
+                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      ) : (
+                        <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                      )}
+                      <div>
+                        <p className={`font-semibold text-sm ${oauthResult.status === 'success' ? 'text-green-900' : 'text-red-900'}`}>
+                          {oauthResult.status === 'success' ? 'Success!' : 'Error'}
+                        </p>
+                        <p className={`text-xs mt-1 ${oauthResult.status === 'success' ? 'text-green-800' : 'text-red-800'}`}>
+                          {oauthResult.message}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Token Details - collapsible within test config */}
+                {oauthResult?.tokenResponse && (
+                  <div className="space-y-3 border-t pt-4 mt-4">
+                    {/* Token Response */}
+                    <div>
+                      <button
+                        onClick={() => setShowTokenResponse(!showTokenResponse)}
+                        className="flex items-center justify-between w-full text-left py-2 px-3 rounded-md hover:bg-gray-50 transition-colors"
+                      >
+                        <span className="font-medium text-sm">Token Response</span>
+                        {showTokenResponse ? (
+                          <ChevronDown className="w-4 h-4 text-gray-500" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4 text-gray-500" />
+                        )}
+                      </button>
+                      {showTokenResponse && (
+                        <div className="mt-2 bg-gray-50 rounded-lg p-4">
+                          <pre className="text-xs font-mono overflow-x-auto whitespace-pre-wrap break-all">
+                            {JSON.stringify(oauthResult.tokenResponse, null, 2)}
+                          </pre>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Decoded ID Token */}
+                    {oauthResult.decodedIdToken && (
+                      <div>
+                        <button
+                          onClick={() => setShowDecodedToken(!showDecodedToken)}
+                          className="flex items-center justify-between w-full text-left py-2 px-3 rounded-md hover:bg-gray-50 transition-colors"
+                        >
+                          <span className="font-medium text-sm">Decoded ID Token</span>
+                          {showDecodedToken ? (
+                            <ChevronDown className="w-4 h-4 text-gray-500" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 text-gray-500" />
+                          )}
+                        </button>
+                        {showDecodedToken && (
+                          <div className="mt-2 space-y-2">
+                            <p className="text-xs text-gray-600">
+                              Claims extracted from the ID token JWT:
+                            </p>
+                            <div className="bg-gray-50 rounded-lg p-4">
+                              <pre className="text-xs font-mono overflow-x-auto whitespace-pre-wrap break-all">
+                                {JSON.stringify(oauthResult.decodedIdToken, null, 2)}
+                              </pre>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
 
