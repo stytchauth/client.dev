@@ -14,7 +14,6 @@ export interface ValidationResult {
 export const validateCIMDDocument = async (
   metadata: any,
   sourceUrl: string | null,
-  checkReachability: boolean
 ): Promise<ValidationResult> => {
   const errors: ValidationError[] = []
   const warnings: ValidationError[] = []
@@ -122,45 +121,6 @@ export const validateCIMDDocument = async (
       message: 'Client name is very long (>200 chars)',
       severity: 'warning'
     })
-  }
-
-  // Reachability checks (if enabled)
-  if (checkReachability) {
-    const urlsToCheck: Array<{ field: string; url: string }> = []
-
-    // Collect URLs to check
-    uriFields.forEach(field => {
-      if (metadata[field] && typeof metadata[field] === 'string' && metadata[field].startsWith('https://')) {
-        urlsToCheck.push({ field, url: metadata[field] })
-      }
-    })
-
-    // Also check redirect URIs
-    if (metadata.redirect_uris && Array.isArray(metadata.redirect_uris)) {
-      metadata.redirect_uris.forEach((uri: any, index: number) => {
-        if (typeof uri === 'string' && uri.startsWith('https://')) {
-          urlsToCheck.push({ field: `redirect_uris[${index}]`, url: uri })
-        }
-      })
-    }
-
-    // Perform reachability checks
-    for (const { field, url } of urlsToCheck) {
-      try {
-        await fetch(url, {
-          method: 'HEAD',
-          mode: 'no-cors' // Avoid CORS issues for reachability check
-        })
-        // Note: no-cors mode means we can't check the actual status,
-        // but if the request completes without error, the URL is likely reachable
-      } catch (error) {
-        warnings.push({
-          path: field,
-          message: `URL may not be reachable: ${error instanceof Error ? error.message : 'Unknown error'}`,
-          severity: 'warning'
-        })
-      }
-    }
   }
 
   return {

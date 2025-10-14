@@ -4,8 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
-import { Search, CheckCircle, Code, AlertCircle, Copy, Play, Shield } from "lucide-react"
+import { Search, CheckCircle, Code, AlertCircle, Copy, Play } from "lucide-react"
 import { CodeBlock } from "@/lib/shiki"
 import { validateCIMDDocument, generateTextReport, ValidationResult } from './utils'
 
@@ -14,7 +13,6 @@ export function ExploreContent() {
   const [inputValue, setInputValue] = useState('')
   const [validationResult, setValidationResult] = useState<ValidationResult | null>(null)
   const [isValidating, setIsValidating] = useState(false)
-  const [enableReachabilityCheck, setEnableReachabilityCheck] = useState(false)
 
   const validateInput = async () => {
     if (!inputValue.trim()) return
@@ -103,7 +101,7 @@ export function ExploreContent() {
       }
 
       // Validate the metadata
-      const result = await validateCIMDDocument(metadata, sourceUrl, enableReachabilityCheck)
+      const result = await validateCIMDDocument(metadata, sourceUrl)
       setValidationResult(result)
 
     } catch (error) {
@@ -219,21 +217,6 @@ export function ExploreContent() {
                   />
                 </div>
               )}
-
-              {/* Reachability Check Toggle */}
-              <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-                <Switch
-                  id="reachability"
-                  checked={enableReachabilityCheck}
-                  onCheckedChange={setEnableReachabilityCheck}
-                />
-                <label htmlFor="reachability" className="text-sm">
-                  <span className="font-medium">Check reachability</span>
-                  <span className="block text-gray-600">
-                    Verify that URLs, including redirect URIs, return HTTP 200 (adds network requests)
-                  </span>
-                </label>
-              </div>
 
               <Button
                 onClick={validateInput}
