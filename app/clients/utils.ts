@@ -39,6 +39,20 @@ export const validateCIMDDocument = async (
     })
   }
 
+  if (!metadata.client_uri) {
+    warnings.push({
+      path: 'client_uri',
+      message: 'Missing recommended field: client_uri',
+      severity: 'warning'
+    })
+  } else if (metadata.client_uri.hostname !== metadata.client_id.hostname) {
+    warnings.push({
+      path: 'client_uri',
+      message: 'client_uri should share the same domain as client_id',
+      severity: 'warning'
+    })
+  }
+
   if (!metadata.redirect_uris || !Array.isArray(metadata.redirect_uris)) {
     errors.push({
       path: 'redirect_uris',
@@ -63,7 +77,7 @@ export const validateCIMDDocument = async (
         })
       } else {
         // Check for non-HTTPS URIs (warning, not error)
-        if (!uri.startsWith('https://') && !uri.startsWith('http://localhost')) {
+        if (!uri.startsWith('https://') && !uri.startsWith('http://localhost') && !uri.startsWith('http://127.0.0.1')) {
           warnings.push({
             path: `redirect_uris[${index}]`,
             message: 'Redirect URIs should use HTTPS for security (except localhost)',
@@ -85,7 +99,7 @@ export const validateCIMDDocument = async (
   }
 
   // Validate optional URI fields
-  const uriFields = ['logo_uri', 'client_uri', 'policy_uri', 'tos_uri', 'jwks_uri']
+  const uriFields = ['logo_uri', 'policy_uri', 'tos_uri', 'jwks_uri']
   uriFields.forEach(field => {
     if (metadata[field]) {
       if (typeof metadata[field] !== 'string') {
