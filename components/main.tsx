@@ -9,4 +9,4 @@ export function Main({ children, className = "" }: MainProps) {
       {children}
     </main>
   )
-} 
+}

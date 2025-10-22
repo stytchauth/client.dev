@@ -1,7 +1,7 @@
 import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/card"
 import { Globe, CheckCircle, ExternalLink, Code, Server, AlertCircle, ArrowLeft } from "lucide-react"
-import { CodeBlock } from "@/lib/shiki"
+import { CodeBlock } from "@/components/codeblock"
 
 export function LearnContent() {
   return (

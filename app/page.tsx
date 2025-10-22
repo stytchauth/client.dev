@@ -1,13 +1,12 @@
 'use client'
 
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/button"
+import { Card, CardContent } from "@/components/card"
 import { ExternalLink, Users, Zap, Database, Shield, CheckCircle } from "lucide-react"
-import { CodeBlock } from "@/lib/shiki"
-import { PresentedByStytch } from '@/components/ui/stytch';
-import { Header } from '@/components/ui/header';
-import { Main } from "@/components/ui/main"
+import { CodeBlock } from "@/components/codeblock"
+import { Header } from '@/components/header';
+import { Main } from "@/components/main"
 
 export default function HomePage() {
   return (
@@ -117,7 +116,7 @@ export default function HomePage() {
                     CIMD provides <strong>built-in protection against client impersonation</strong> because the authorization server can verify that the client_uri has the same origin as the CIMD URL.
                   </p>
                   <div className="text-sm text-blue-700">
-                    <strong>Example:</strong> If the CIMD is hosted at <code className="bg-blue-100 px-1 rounded">https://dmic.dev/oauth/metadata.json</code> but claims <code className="bg-blue-100 px-1 rounded">client_uri: "https://client.dev"</code>, the server can detect this mismatch and show appropriate warnings.
+                    <strong>Example:</strong> If the CIMD is hosted at <code className="bg-blue-100 px-1 rounded">https://cimd.dev/oauth/metadata.json</code> but claims <code className="bg-blue-100 px-1 rounded">client_uri: "https://client.dev"</code>, the server can detect this mismatch and show appropriate warnings.
                   </div>
                 </div>
               </div>

@@ -1,8 +1,6 @@
-'use client'
-
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/card"
 import { Search, AlertCircle, Play, ExternalLink, CheckCircle, Loader2, ChevronDown, ChevronRight } from "lucide-react"
 
 interface TokenResponse {

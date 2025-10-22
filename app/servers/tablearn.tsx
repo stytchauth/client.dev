@@ -1,9 +1,7 @@
-'use client'
-
 import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/card"
 import { ArrowLeft, Server, Shield, AlertTriangle, Clock, CheckCircle, Code, Database, Zap, Monitor, Network, Lock } from "lucide-react"
-import { CodeBlock } from "@/lib/shiki"
+import { CodeBlock } from "@/components/codeblock"
 
 export function LearnContent() {
   return (

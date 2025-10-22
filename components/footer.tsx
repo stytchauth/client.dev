@@ -1,6 +1,6 @@
 'use client'
 
-import { PresentedByStytch } from "./stytch";
+import { PresentedByStytch } from "@/components/stytch";
 
 export function Footer() {
   return (
@@ -17,4 +17,4 @@ export function Footer() {
       </div>
     </footer>
   )
-} 
+}

@@ -1,11 +1,9 @@
-'use client'
-
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/card"
+import { Textarea } from "@/components/textarea"
 import { Search, CheckCircle, Code, AlertCircle, Copy, Play } from "lucide-react"
-import { CodeBlock } from "@/lib/shiki"
+import { CodeBlock } from "@/components/codeblock"
 import { validateCIMDDocument, generateTextReport, ValidationResult } from './utils'
 
 export function ExploreContent() {

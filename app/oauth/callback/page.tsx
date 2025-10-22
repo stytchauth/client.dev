@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/card"
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react"
 
 interface OAuthFlowState {

@@ -1,10 +1,10 @@
 'use client'
 
 import Link from "next/link"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs"
 import { ArrowLeft, FileText, Search } from "lucide-react"
-import { Header } from '@/components/ui/header';
-import { Main } from "@/components/ui/main";
+import { Header } from '@/components/header';
+import { Main } from "@/components/main";
 import { LearnContent } from './tablearn';
 import { ExploreContent } from './tabexplore';
 
