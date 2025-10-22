@@ -2,9 +2,7 @@
   "client_id": "https://client.dev/oauth/metadata.json",
   "client_name": "client.dev",
   "client_uri": "https://client.dev",
-  "redirect_uris": [
-    "https://client.dev/oauth/callback"
-  ],
+  "redirect_uris": ["https://client.dev/oauth/callback"],
   "grant_types": ["authorization_code"],
   "response_types": ["code"],
   "token_endpoint_auth_method": "none"

@@ -1,8 +1,8 @@
-import Link from "next/link"
-import { AlertCircle } from "lucide-react"
+import Link from "next/link";
+import { AlertCircle } from "lucide-react";
 
 interface HeaderProps {
-  currentPage?: string
+  currentPage?: string;
 }
 
 export function Header({ currentPage }: HeaderProps) {
@@ -13,7 +13,7 @@ export function Header({ currentPage }: HeaderProps) {
         <div className="max-w-4xl mx-auto flex items-center justify-center gap-2 text-sm">
           <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0" />
           <p className="text-amber-800">
-            <strong>Note:</strong> CIMD is currently an{' '}
+            <strong>Note:</strong> CIMD is currently an{" "}
             <Link
               href="https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/"
               target="_blank"
@@ -30,22 +30,26 @@ export function Header({ currentPage }: HeaderProps) {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Link href="/" className="hover:opacity-80">
-              <span className="text-xl font-bold">Client ID Metadata Documents</span>
+              <span className="text-xl font-bold">
+                Client ID Metadata Documents
+              </span>
             </Link>
             {currentPage && (
-              <span className="text-sm text-gray-500 hidden md:inline">/{currentPage}</span>
+              <span className="text-sm text-gray-500 hidden md:inline">
+                /{currentPage}
+              </span>
             )}
           </div>
           <nav className="flex items-center space-x-2 md:space-x-6">
             <Link
               href="/servers"
-              className={`text-sm ${currentPage === 'servers' ? 'font-bold' : 'hover:underline'}`}
+              className={`text-sm ${currentPage === "servers" ? "font-bold" : "hover:underline"}`}
             >
               for servers
             </Link>
             <Link
               href="/clients"
-              className={`text-sm ${currentPage === 'clients' ? 'font-bold' : 'hover:underline'}`}
+              className={`text-sm ${currentPage === "clients" ? "font-bold" : "hover:underline"}`}
             >
               for clients
             </Link>
@@ -53,5 +57,5 @@ export function Header({ currentPage }: HeaderProps) {
         </div>
       </header>
     </>
-  )
+  );
 }

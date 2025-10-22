@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import Link from "next/link"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs"
-import { ArrowLeft, FileText, Search } from "lucide-react"
-import { Header } from '@/components/header';
+import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs";
+import { ArrowLeft, FileText, Search } from "lucide-react";
+import { Header } from "@/components/header";
 import { Main } from "@/components/main";
-import { LearnContent } from './tablearn';
-import { ExploreContent } from './tabexplore';
+import { LearnContent } from "./tablearn";
+import { ExploreContent } from "./tabexplore";
 
 export default function ClientsPage() {
   return (
@@ -18,24 +18,34 @@ export default function ClientsPage() {
         <div className="space-y-12">
           {/* Header */}
           <div className="space-y-4">
-            <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm">
+            <Link
+              href="/"
+              className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
             </Link>
             <h1 className="text-4xl font-bold">CIMD for Clients</h1>
             <p className="text-xl text-gray-600 max-w-3xl">
-              Learn how to create and host Client ID Metadata Documents for your OAuth applications.
+              Learn how to create and host Client ID Metadata Documents for your
+              OAuth applications.
             </p>
           </div>
 
           {/* Tabs */}
           <Tabs defaultValue="learn" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="learn" className="flex items-center space-x-2">
+              <TabsTrigger
+                value="learn"
+                className="flex items-center space-x-2"
+              >
                 <FileText className="w-4 h-4" />
                 <span>Learn</span>
               </TabsTrigger>
-              <TabsTrigger value="explore" className="flex items-center space-x-2">
+              <TabsTrigger
+                value="explore"
+                className="flex items-center space-x-2"
+              >
                 <Search className="w-4 h-4" />
                 <span>Explore</span>
               </TabsTrigger>
@@ -52,5 +62,5 @@ export default function ClientsPage() {
         </div>
       </Main>
     </div>
-  )
+  );
 }

@@ -1,7 +1,20 @@
-import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/card"
-import { ArrowLeft, Server, Shield, AlertTriangle, Clock, CheckCircle, Code, Database, Zap, Monitor, Network, Lock } from "lucide-react"
-import { CodeBlock } from "@/components/codeblock"
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/card";
+import {
+  ArrowLeft,
+  Server,
+  Shield,
+  AlertTriangle,
+  Clock,
+  CheckCircle,
+  Code,
+  Database,
+  Zap,
+  Monitor,
+  Network,
+  Lock,
+} from "lucide-react";
+import { CodeBlock } from "@/components/codeblock";
 
 export function LearnContent() {
   return (
@@ -13,8 +26,9 @@ export function LearnContent() {
         </div>
         <div className="flex-1">
           <p className="text-blue-700">
-            With CIMD, your authorization server can fetch client metadata just-in-time from the client_id URL.
-            In most cases, you don't even need a client registry &mdash; just fetch the metadata in real time.
+            With CIMD, your authorization server can fetch client metadata
+            just-in-time from the client_id URL. In most cases, you don't even
+            need a client registry &mdash; just fetch the metadata in real time.
           </p>
         </div>
       </div>
@@ -30,7 +44,9 @@ export function LearnContent() {
             </div>
             <div className="flex-1">
               <h3 className="font-semibold">Receive OAuth Request</h3>
-              <p className="text-sm text-gray-600">Client sends authorization request with client_id as HTTPS URL</p>
+              <p className="text-sm text-gray-600">
+                Client sends authorization request with client_id as HTTPS URL
+              </p>
               <div className="mt-2">
                 <CodeBlock language="http">{`GET /authorize?client_id=https://client.dev/oauth/metadata.json&...`}</CodeBlock>
               </div>
@@ -43,7 +59,9 @@ export function LearnContent() {
             </div>
             <div className="flex-1">
               <h3 className="font-semibold">Fetch CIMD Document</h3>
-              <p className="text-sm text-gray-600">Make HTTPS GET request to client_id URL to retrieve metadata</p>
+              <p className="text-sm text-gray-600">
+                Make HTTPS GET request to client_id URL to retrieve metadata
+              </p>
               <div className="mt-2">
                 <CodeBlock language="http">{`GET /oauth/metadata.json HTTP/1.1
 Host: client.dev
@@ -58,7 +76,9 @@ Accept: application/json`}</CodeBlock>
             </div>
             <div className="flex-1">
               <h3 className="font-semibold">Validate Schema & Content</h3>
-              <p className="text-sm text-gray-600">Parse JSON, validate required fields, check redirect URIs</p>
+              <p className="text-sm text-gray-600">
+                Parse JSON, validate required fields, check redirect URIs
+              </p>
             </div>
           </div>
 
@@ -68,7 +88,9 @@ Accept: application/json`}</CodeBlock>
             </div>
             <div className="flex-1">
               <h3 className="font-semibold">Enforce Policies</h3>
-              <p className="text-sm text-gray-600">Apply security rules, rate limits, and organizational policies</p>
+              <p className="text-sm text-gray-600">
+                Apply security rules, rate limits, and organizational policies
+              </p>
             </div>
           </div>
 
@@ -77,8 +99,13 @@ Accept: application/json`}</CodeBlock>
               <CheckCircle className="w-5 h-5 text-green-600" />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-green-800">Proceed with OAuth Flow</h3>
-              <p className="text-sm text-green-700">Continue with standard OAuth authorization flow using fetched metadata</p>
+              <h3 className="font-semibold text-green-800">
+                Proceed with OAuth Flow
+              </h3>
+              <p className="text-sm text-green-700">
+                Continue with standard OAuth authorization flow using fetched
+                metadata
+              </p>
             </div>
           </div>
         </div>
@@ -101,28 +128,38 @@ Accept: application/json`}</CodeBlock>
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="font-medium">HTTPS Only</p>
-                    <p className="text-sm text-gray-600">Never fetch metadata over HTTP - reject such client_ids immediately</p>
+                    <p className="text-sm text-gray-600">
+                      Never fetch metadata over HTTP - reject such client_ids
+                      immediately
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Reasonable TTL</p>
-                    <p className="text-sm text-gray-600">Cache metadata for 5-15 minutes to balance freshness with performance</p>
+                    <p className="text-sm text-gray-600">
+                      Cache metadata for 5-15 minutes to balance freshness with
+                      performance
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Respect Cache-Control</p>
-                    <p className="text-sm text-gray-600">Honor HTTP caching headers if provided by the client</p>
+                    <p className="text-sm text-gray-600">
+                      Honor HTTP caching headers if provided by the client
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Backoff on Failures</p>
-                    <p className="text-sm text-gray-600">Implement exponential backoff when metadata fetches fail</p>
+                    <p className="text-sm text-gray-600">
+                      Implement exponential backoff when metadata fetches fail
+                    </p>
                   </div>
                 </div>
               </div>
@@ -143,28 +180,39 @@ Accept: application/json`}</CodeBlock>
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Strict JSON Parsing</p>
-                    <p className="text-sm text-gray-600">Reject malformed JSON immediately</p>
+                    <p className="text-sm text-gray-600">
+                      Reject malformed JSON immediately
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Required Fields</p>
-                    <p className="text-sm text-gray-600">Ensure <code>client_id</code> matches the fetched URL and <code>redirect_uris</code> is present</p>
+                    <p className="text-sm text-gray-600">
+                      Ensure <code>client_id</code> matches the fetched URL and{" "}
+                      <code>redirect_uris</code> is present
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="font-medium">URI Validation</p>
-                    <p className="text-sm text-gray-600">Validate all URIs are well-formed and use appropriate schemes</p>
+                    <p className="text-sm text-gray-600">
+                      Validate all URIs are well-formed and use appropriate
+                      schemes
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Redirect URI Security</p>
-                    <p className="text-sm text-gray-600">Enforce HTTPS for redirect URIs and require exact matches (no wildcards)</p>
+                    <p className="text-sm text-gray-600">
+                      Enforce HTTPS for redirect URIs and require exact matches
+                      (no wildcards)
+                    </p>
                   </div>
                 </div>
               </div>
@@ -183,7 +231,9 @@ Accept: application/json`}</CodeBlock>
               <div className="space-y-3">
                 <div>
                   <p className="font-medium text-orange-800">Fetch Failures</p>
-                  <p className="text-sm text-gray-600">If metadata fetch fails → return clear OAuth error response</p>
+                  <p className="text-sm text-gray-600">
+                    If metadata fetch fails → return clear OAuth error response
+                  </p>
                   <div className="mt-2">
                     <CodeBlock language="json">{`{
   "error": "invalid_client",
@@ -192,8 +242,13 @@ Accept: application/json`}</CodeBlock>
                   </div>
                 </div>
                 <div>
-                  <p className="font-medium text-orange-800">Validation Failures</p>
-                  <p className="text-sm text-gray-600">If JSON is invalid or missing required fields → return descriptive error</p>
+                  <p className="font-medium text-orange-800">
+                    Validation Failures
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    If JSON is invalid or missing required fields → return
+                    descriptive error
+                  </p>
                   <div className="mt-2">
                     <CodeBlock language="json">{`{
   "error": "invalid_client_metadata",
@@ -203,7 +258,10 @@ Accept: application/json`}</CodeBlock>
                 </div>
                 <div>
                   <p className="font-medium text-orange-800">Retry Strategy</p>
-                  <p className="text-sm text-gray-600">Consider implementing a retry window before permanent failure</p>
+                  <p className="text-sm text-gray-600">
+                    Consider implementing a retry window before permanent
+                    failure
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -224,35 +282,48 @@ Accept: application/json`}</CodeBlock>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-red-700 text-sm">
-              Fetching arbitrary URLs creates Server-Side Request Forgery (SSRF) risks. Implement these protections:
+              Fetching arbitrary URLs creates Server-Side Request Forgery (SSRF)
+              risks. Implement these protections:
             </p>
             <div className="space-y-3">
               <div className="flex items-start space-x-3">
                 <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
                 <div>
                   <p className="font-medium">Network Restrictions</p>
-                  <p className="text-sm text-gray-600">Allowlist egress to public IPv4/IPv6 only - block private ranges (10.0.0.0/8, 192.168.0.0/16, 127.0.0.0/8)</p>
+                  <p className="text-sm text-gray-600">
+                    Allowlist egress to public IPv4/IPv6 only - block private
+                    ranges (10.0.0.0/8, 192.168.0.0/16, 127.0.0.0/8)
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
                 <div>
                   <p className="font-medium">DNS Security</p>
-                  <p className="text-sm text-gray-600">Resolve DNS once and pin IP for the request to prevent DNS rebinding attacks</p>
+                  <p className="text-sm text-gray-600">
+                    Resolve DNS once and pin IP for the request to prevent DNS
+                    rebinding attacks
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
                 <div>
                   <p className="font-medium">Request Limits</p>
-                  <p className="text-sm text-gray-600">Set tight timeouts (5-10s), limit content length (5KB), restrict redirects (max 3)</p>
+                  <p className="text-sm text-gray-600">
+                    Set tight timeouts (5-10s), limit content length (5KB),
+                    restrict redirects (max 3)
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
                 <div>
                   <p className="font-medium">Dedicated Proxy</p>
-                  <p className="text-sm text-gray-600">Use a separate egress proxy for metadata fetches, isolated from internal networks</p>
+                  <p className="text-sm text-gray-600">
+                    Use a separate egress proxy for metadata fetches, isolated
+                    from internal networks
+                  </p>
                 </div>
               </div>
             </div>
@@ -307,15 +378,21 @@ Accept: application/json`}</CodeBlock>
             <CardContent className="space-y-3 text-sm">
               <div>
                 <p className="font-medium">Log All Fetch Outcomes</p>
-                <p className="text-gray-600">Success, failures, validation errors with correlation IDs</p>
+                <p className="text-gray-600">
+                  Success, failures, validation errors with correlation IDs
+                </p>
               </div>
               <div>
                 <p className="font-medium">Track Performance Metrics</p>
-                <p className="text-gray-600">Response times, cache hit rates, error rates by client_id</p>
+                <p className="text-gray-600">
+                  Response times, cache hit rates, error rates by client_id
+                </p>
               </div>
               <div>
                 <p className="font-medium">Alert on Anomalies</p>
-                <p className="text-gray-600">High failure rates, slow responses, suspicious patterns</p>
+                <p className="text-gray-600">
+                  High failure rates, slow responses, suspicious patterns
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -330,19 +407,28 @@ Accept: application/json`}</CodeBlock>
             <CardContent className="space-y-3 text-sm">
               <div>
                 <p className="font-medium">Manual Refresh</p>
-                <p className="text-gray-600">Admin tool to force re-fetch when clients update metadata</p>
+                <p className="text-gray-600">
+                  Admin tool to force re-fetch when clients update metadata
+                </p>
               </div>
               <div>
                 <p className="font-medium">Cache Inspection</p>
-                <p className="text-gray-600">View cached metadata and expiration times</p>
+                <p className="text-gray-600">
+                  View cached metadata and expiration times
+                </p>
               </div>
               <div>
                 <p className="font-medium">Debugging Support</p>
-                <p className="text-gray-600">Trace metadata fetch process for troubleshooting</p>
+                <p className="text-gray-600">
+                  Trace metadata fetch process for troubleshooting
+                </p>
               </div>
               <div>
                 <p className="font-medium">Consent Screen Enhancement</p>
-                <p className="text-gray-600">Display client_uri on consent screens. Show trust warnings for localhost redirects.</p>
+                <p className="text-gray-600">
+                  Display client_uri on consent screens. Show trust warnings for
+                  localhost redirects.
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -456,5 +542,5 @@ def validate_cimd_schema(metadata: dict, expected_client_id: str):
         </div>
       </div>
     </div>
-  )
+  );
 }

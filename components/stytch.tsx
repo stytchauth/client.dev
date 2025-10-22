@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from "react";
 function Icon() {
   return (
     <div className="h-4 w-[13px] flex-shrink-0 flex items-center justify-center">
-      <svg 
-        fill="none" 
-        viewBox="0 0 15 18" 
+      <svg
+        fill="none"
+        viewBox="0 0 15 18"
         className="block w-[13px] h-4 flex-shrink-0"
       >
         <path
@@ -152,7 +152,7 @@ export function PresentedByStytch() {
     if (isInCooldown || !hasInitialAnimated) return;
 
     setIsInCooldown(true);
-    setAnimationTrigger(prev => prev + 1);
+    setAnimationTrigger((prev) => prev + 1);
 
     // Clear existing cooldown
     if (cooldownRef.current) {
@@ -178,8 +178,12 @@ export function PresentedByStytch() {
   }, []);
 
   return (
-    <Link href="https://stytch.com?utm_source=client.dev" target="_blank" rel="noopener noreferrer">
-      <div 
+    <Link
+      href="https://stytch.com?utm_source=client.dev"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <div
         className="bg-[rgb(178,214,222)] w-[188px] cursor-pointer p-2 hover:bg-[rgb(158,194,202)] rounded-md"
         onMouseEnter={handleMouseEnter}
       >

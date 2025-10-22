@@ -1,7 +1,15 @@
-import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/card"
-import { Globe, CheckCircle, ExternalLink, Code, Server, AlertCircle, ArrowLeft } from "lucide-react"
-import { CodeBlock } from "@/components/codeblock"
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/card";
+import {
+  Globe,
+  CheckCircle,
+  ExternalLink,
+  Code,
+  Server,
+  AlertCircle,
+  ArrowLeft,
+} from "lucide-react";
+import { CodeBlock } from "@/components/codeblock";
 
 export function LearnContent() {
   return (
@@ -13,8 +21,11 @@ export function LearnContent() {
         </div>
         <div className="flex-1">
           <p className="text-blue-700">
-            With CIMD, your <code className="bg-blue-100 px-1 rounded">client_id</code> is simply an HTTPS URL that serves your client metadata as JSON.
-            No preregistration necessary &mdash; just host your metadata and start using OAuth.
+            With CIMD, your{" "}
+            <code className="bg-blue-100 px-1 rounded">client_id</code> is
+            simply an HTTPS URL that serves your client metadata as JSON. No
+            preregistration necessary &mdash; just host your metadata and start
+            using OAuth.
           </p>
         </div>
       </div>
@@ -30,7 +41,9 @@ export function LearnContent() {
                 <span className="text-blue-600 font-bold text-lg">1</span>
               </div>
               <h3 className="font-semibold mb-2">Create Metadata</h3>
-              <p className="text-sm text-gray-600">Write a JSON document with your client information</p>
+              <p className="text-sm text-gray-600">
+                Write a JSON document with your client information
+              </p>
             </CardContent>
           </Card>
 
@@ -40,7 +53,9 @@ export function LearnContent() {
                 <span className="text-blue-600 font-bold text-lg">2</span>
               </div>
               <h3 className="font-semibold mb-2">Host at URL</h3>
-              <p className="text-sm text-gray-600">Serve it over HTTPS with proper Content-Type</p>
+              <p className="text-sm text-gray-600">
+                Serve it over HTTPS with proper Content-Type
+              </p>
             </CardContent>
           </Card>
 
@@ -50,7 +65,9 @@ export function LearnContent() {
                 <span className="text-blue-600 font-bold text-lg">3</span>
               </div>
               <h3 className="font-semibold mb-2">Use URL as client_id</h3>
-              <p className="text-sm text-gray-600">Pass the metadata URL directly as your client identifier</p>
+              <p className="text-sm text-gray-600">
+                Pass the metadata URL directly as your client identifier
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -71,19 +88,30 @@ export function LearnContent() {
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-4 h-4 text-green-500" />
-                <span className="text-sm"><strong>HTTPS only</strong> - HTTP URLs are not allowed</span>
+                <span className="text-sm">
+                  <strong>HTTPS only</strong> - HTTP URLs are not allowed
+                </span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-4 h-4 text-green-500" />
-                <span className="text-sm"><strong>Content-Type: application/json</strong> - Proper HTTP header required</span>
+                <span className="text-sm">
+                  <strong>Content-Type: application/json</strong> - Proper HTTP
+                  header required
+                </span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-4 h-4 text-green-500" />
-                <span className="text-sm"><strong>Stable origin</strong> - Use a reliable, long-term domain</span>
+                <span className="text-sm">
+                  <strong>Stable origin</strong> - Use a reliable, long-term
+                  domain
+                </span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-4 h-4 text-green-500" />
-                <span className="text-sm"><strong>Current metadata</strong> - Keep information accurate and up-to-date</span>
+                <span className="text-sm">
+                  <strong>Current metadata</strong> - Keep information accurate
+                  and up-to-date
+                </span>
               </div>
             </div>
           </CardContent>
@@ -100,12 +128,20 @@ export function LearnContent() {
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">client_id</code>
-                  <p className="text-sm text-gray-600 mt-1">Must match the URL serving this document</p>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    client_id
+                  </code>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Must match the URL serving this document
+                  </p>
                 </div>
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">redirect_uris</code>
-                  <p className="text-sm text-gray-600 mt-1">Array of exact redirect URIs for your application</p>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    redirect_uris
+                  </code>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Array of exact redirect URIs for your application
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -116,16 +152,28 @@ export function LearnContent() {
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">client_name</code>
-                  <p className="text-sm text-gray-600 mt-1">Human-readable name for your application</p>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    client_name
+                  </code>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Human-readable name for your application
+                  </p>
                 </div>
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">logo_uri</code>
-                  <p className="text-sm text-gray-600 mt-1">URL to your application's logo image</p>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    logo_uri
+                  </code>
+                  <p className="text-sm text-gray-600 mt-1">
+                    URL to your application&apos;s logo image
+                  </p>
                 </div>
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">client_uri</code>
-                  <p className="text-sm text-gray-600 mt-1">URL to your application's homepage</p>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    client_uri
+                  </code>
+                  <p className="text-sm text-gray-600 mt-1">
+                    URL to your application&apos;s homepage
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -136,24 +184,40 @@ export function LearnContent() {
             <CardContent className="p-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">tos_uri</code>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    tos_uri
+                  </code>
                   <p className="text-sm text-gray-600 mt-1">Terms of service</p>
                 </div>
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">policy_uri</code>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    policy_uri
+                  </code>
                   <p className="text-sm text-gray-600 mt-1">Privacy policy</p>
                 </div>
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">grant_types</code>
-                  <p className="text-sm text-gray-600 mt-1">Supported grant types</p>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    grant_types
+                  </code>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Supported grant types
+                  </p>
                 </div>
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">response_types</code>
-                  <p className="text-sm text-gray-600 mt-1">Supported response types</p>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    response_types
+                  </code>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Supported response types
+                  </p>
                 </div>
                 <div>
-                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">post_logout_redirect_uris</code>
-                  <p className="text-sm text-gray-600 mt-1">Post-logout redirects</p>
+                  <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                    post_logout_redirect_uris
+                  </code>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Post-logout redirects
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -180,7 +244,8 @@ export function LearnContent() {
   "redirect_uris": ["https://client.dev/oauth/callback"]
 }`}</CodeBlock>
             <p className="text-sm text-gray-600 mt-4">
-              This minimal document includes just the essential fields. Host this JSON at the URL specified in <code>client_id</code>.
+              This minimal document includes just the essential fields. Host
+              this JSON at the URL specified in <code>client_id</code>.
             </p>
           </CardContent>
         </Card>
@@ -209,7 +274,8 @@ export function LearnContent() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600 mb-4">
-              The Bluesky/ATProto ecosystem uses CIMD-style client metadata. Here's an example from their OAuth implementation:
+              The Bluesky/ATProto ecosystem uses CIMD-style client metadata.
+              Here&apos;s an example from their OAuth implementation:
             </p>
             <CodeBlock language="json">{`{
   "client_id": "https://oauthbluesky.onrender.com/oauth/client-metadata.json",
@@ -234,7 +300,9 @@ export function LearnContent() {
 
         <Card className="border border-green-200 bg-green-50">
           <CardHeader>
-            <CardTitle className="text-green-800">Pre-deployment Checklist</CardTitle>
+            <CardTitle className="text-green-800">
+              Pre-deployment Checklist
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -242,42 +310,58 @@ export function LearnContent() {
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
                   <p className="font-medium">URL accessibility</p>
-                  <p className="text-sm text-gray-600">Verify the URL used as client_id returns valid JSON</p>
+                  <p className="text-sm text-gray-600">
+                    Verify the URL used as client_id returns valid JSON
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
                   <p className="font-medium">Exact redirect URIs</p>
-                  <p className="text-sm text-gray-600">Ensure all redirect URIs are exact matches (no wildcards). HTTPS is recommended but not required.</p>
+                  <p className="text-sm text-gray-600">
+                    Ensure all redirect URIs are exact matches (no wildcards).
+                    HTTPS is recommended but not required.
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
                   <p className="font-medium">HTTPS and Content-Type</p>
-                  <p className="text-sm text-gray-600">Confirm HTTPS hosting with <code>application/json</code> header</p>
+                  <p className="text-sm text-gray-600">
+                    Confirm HTTPS hosting with <code>application/json</code>{" "}
+                    header
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
                   <p className="font-medium">Optional fields for UX</p>
-                  <p className="text-sm text-gray-600">Add logo_uri, client_uri, and policy links for better user experience</p>
+                  <p className="text-sm text-gray-600">
+                    Add logo_uri, client_uri, and policy links for better user
+                    experience
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
                   <p className="font-medium">JSON validity</p>
-                  <p className="text-sm text-gray-600">Validate JSON syntax and structure</p>
+                  <p className="text-sm text-gray-600">
+                    Validate JSON syntax and structure
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
                   <p className="font-medium">Production vs development</p>
-                  <p className="text-sm text-gray-600">Avoid localhost redirect URIs in production. Use separate CIMD documents for development environments.</p>
+                  <p className="text-sm text-gray-600">
+                    Avoid localhost redirect URIs in production. Use separate
+                    CIMD documents for development environments.
+                  </p>
                 </div>
               </div>
             </div>
@@ -319,5 +403,5 @@ export function LearnContent() {
         </div>
       </div>
     </div>
-  )
+  );
 }
