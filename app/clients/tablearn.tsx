@@ -260,10 +260,10 @@ export function LearnContent() {
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center">
                 <Globe className="w-5 h-5 mr-2" />
-                Bluesky/ATProto Ecosystem
+                VSCode
               </div>
               <Link
-                href="https://oauthbluesky.onrender.com/oauth/client-metadata.json"
+                href="https://vscode.dev/oauth/client-metadata.json"
                 target="_blank"
                 className="text-sm text-blue-600 hover:text-blue-800 flex items-center"
               >
@@ -274,21 +274,27 @@ export function LearnContent() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600 mb-4">
-              The Bluesky/ATProto ecosystem uses CIMD-style client metadata.
-              Here&apos;s an example from their OAuth implementation:
+              VSCode has introduced a Client ID Metadata Document for their
+              OAuth implementation.
             </p>
             <CodeBlock language="json">{`{
-  "client_id": "https://oauthbluesky.onrender.com/oauth/client-metadata.json",
-  "client_name": "OAuth Bluesky Demo",
-  "client_uri": "https://oauthbluesky.onrender.com",
-  "logo_uri": "https://oauthbluesky.onrender.com/logo.png",
-  "redirect_uris": [
-    "https://oauthbluesky.onrender.com/oauth/callback"
+  "application_type": "native",
+  "client_id": "https://vscode.dev/oauth/client-metadata.json",
+  "client_name": "Visual Studio Code",
+  "client_uri": "https://vscode.dev/product",
+  "grant_types": [
+    "authorization_code",
+    "refresh_token",
+    "urn:ietf:params:oauth:grant-type:device_code"
   ],
-  "grant_types": ["authorization_code"],
-  "response_types": ["code"],
-  "token_endpoint_auth_method": "private_key_jwt",
-  "jwks_uri": "https://oauthbluesky.onrender.com/.well-known/jwks.json"
+  "response_types": [
+    "code"
+  ],
+  "redirect_uris": [
+    "https://vscode.dev/redirect",
+    "http://127.0.0.1:33418/"
+  ],
+  "token_endpoint_auth_method": "none"
 }`}</CodeBlock>
           </CardContent>
         </Card>
